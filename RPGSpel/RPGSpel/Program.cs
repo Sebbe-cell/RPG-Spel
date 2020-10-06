@@ -11,7 +11,7 @@ using System.Data.SqlTypes;
 
 namespace speltest
 {
-
+    //Hallå
     class Program
     {
         public static PlayerAttributes currentPlayer = new PlayerAttributes();
