@@ -14,6 +14,7 @@ namespace speltest
     //Hallå
     // Commit - Sebbe
     // Test2
+    // hej o hå. =)
     class Program
     {
         public static PlayerAttributes currentPlayer = new PlayerAttributes();
