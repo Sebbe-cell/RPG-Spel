@@ -13,6 +13,7 @@ namespace speltest
 {
     //Hallå
     // Commit - Sebbe
+    // Test2
     class Program
     {
         public static PlayerAttributes currentPlayer = new PlayerAttributes();
