@@ -367,8 +367,18 @@ namespace speltest
             Console.WriteLine("Äntligen där! Väl framme öppnar du dörren och går du upp för trapporna när du möter..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Warlock", 3, 20);
+            Battle("Warlock", 4, 30);
 
+        }
+
+        public static void ThirdEncounter()
+        {
+            Console.Clear();
+            Console.WriteLine("Du stöter på en Zombie!");
+            Console.WriteLine("Han springer fort mot dig och ni börjar attackera varandra!");
+            Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
+            Console.ReadKey();
+            Battle("Zombie", 3, 6);
         }
 
         public static void HealthPotion()
@@ -678,7 +688,7 @@ namespace speltest
 
                     CurrentEnemy3.Draw();
                     CurrentEnemy3 = new Enemy(37, 26);
-                    FirstEncounter();
+                    ThirdEncounter();
                     if (Program.currentPlayer.playerHealth <= 0)
                     {
                         GameOverScreen();
