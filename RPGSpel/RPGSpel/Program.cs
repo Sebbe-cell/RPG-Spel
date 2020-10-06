@@ -245,6 +245,7 @@ namespace speltest
         public Throwingstar SpecialAtt;
         public Armor CurrentArmor;
         public Note CurrentNote;
+        public Enemy CurrentEnemy3;
 
         public void Start()
         {
@@ -291,6 +292,7 @@ namespace speltest
             SpecialAtt = new Throwingstar(25, 2);
             CurrentArmor = new Armor(26, 15);
             CurrentNote = new Note(1, 5);
+            CurrentEnemy3 = new Enemy(6, 15);
 
             RunGameLoop();
         }
@@ -308,6 +310,7 @@ namespace speltest
             SpecialAtt.Draw();
             CurrentArmor.Draw();
             CurrentNote.Draw();
+            CurrentEnemy3.Draw();
         }
 
         // Visar upp startrutan och ingenting annat, första som syns i konsolen.
@@ -659,6 +662,22 @@ namespace speltest
 
                     CurrentEnemy.Draw();
                     CurrentEnemy = new Enemy(35, 26);
+                    FirstEncounter();
+                    if (Program.currentPlayer.playerHealth <= 0)
+                    {
+                        GameOverScreen();
+                        Environment.Exit(0);
+                    }
+                    else
+                        continue;
+
+                }
+
+                if (CurrentPlayer.X == CurrentEnemy3.X && CurrentPlayer.Y == CurrentEnemy3.Y)
+                {
+
+                    CurrentEnemy3.Draw();
+                    CurrentEnemy3 = new Enemy(37, 26);
                     FirstEncounter();
                     if (Program.currentPlayer.playerHealth <= 0)
                     {
