@@ -127,7 +127,7 @@ namespace PepsiMan
 
         static Random rng = new Random(); // Rndom instantieras för Battle metoden.
 
-        public static void Chest()
+        public static void Chest() //Rutan som visas upp när man möter Skattkistan. 
         {
             Console.Clear();
             Console.WriteLine("Du vandrar längs vägen och hittar en gammal skrutten kista, i bältet kommer du på att du har en dolk, du tar fram den och knäcker upp låset");
@@ -138,7 +138,7 @@ namespace PepsiMan
             Console.ReadKey();
         }
 
-        public static void Store()
+        public static void Store() //Rutan som visas när man möter shopkeeper. man bes att svara ja eller nej. och inputen hanteras med if metod. 
         {
             string input;
 
@@ -159,7 +159,7 @@ namespace PepsiMan
                 Console.WriteLine("╚════════════════════╝");
                 Console.WriteLine("");
                 string a = Console.ReadLine();
-                if (a.ToLower() == "k" && Program.currentPlayer.coins >= 10)
+                if (a.ToLower() == "k" && Program.currentPlayer.coins >= 10) // om man svarat ja till köp samt valt item, så kontrolleras det även om man har tillräcklig med coins.
                 {
                     Console.Clear();
                     Program.currentPlayer.special += 1;
@@ -205,7 +205,7 @@ namespace PepsiMan
             Console.WriteLine("Han vänder sig om..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Raider", 1, 8);
+            Battle("Raider", 1, 8); // Enemy 1 - Raider
         }
 
         public static void SecondEncounter()
@@ -215,7 +215,7 @@ namespace PepsiMan
             Console.WriteLine("Äntligen där! Väl framme öppnar du dörren och går du upp för trapporna när du möter..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Warlock", 4, 30);
+            Battle("Warlock", 4, 30); // Enemy 2 - Warlock
 
         }
 
@@ -226,7 +226,7 @@ namespace PepsiMan
             Console.WriteLine("Han springer fort mot dig och ni börjar attackera varandra!");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Zombie", 3, 6);
+            Battle("Zombie", 3, 6); // Enemy 3 - Zombie
         }
 
         public static void HealthPotion()
@@ -279,8 +279,8 @@ namespace PepsiMan
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y - 1)) // kollar först om positionen går att
-                    {                                                                     // möjlig att gå på. om den gör det
+                    if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y - 1)) // kollar först om positionen är
+                    {                                                                     // möjlig att gå på. om den är det
                         CurrentPlayer.Y -= 1;                                             // returneras bool true. och spelaren rör
                     }                                                                     // sig bakåt i y led, dvs uppåt med en position.  
                     break;                                                                //osv..
@@ -307,8 +307,8 @@ namespace PepsiMan
             }
         }
 
-        public static void Battle(string name, int power, int health) // METODEN Battle som startas när man träffar en enemy av olika slag.
-        {
+        public static void Battle(string name, int power, int health) // METODEN Battle som startas när man träffar en enemy av olika slag. man skriver in argument för parametrarna;
+        {                                                             // name, power, health. 
             string enemyName = "";
             int enemyDmg = 0;
             int enemyHealth = 0;
