@@ -7,6 +7,8 @@ using System.Net;
 
 namespace PepsiMan
 {
+
+
     class Program
     {
         public static PlayerAttributes currentPlayer = new PlayerAttributes();
