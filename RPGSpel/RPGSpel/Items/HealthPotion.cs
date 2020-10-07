@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace speltest
+namespace PepsiMan
 {
     // Klassen för HP
     class HealthPotion : Positions

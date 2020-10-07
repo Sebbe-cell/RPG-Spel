@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace speltest
+namespace PepsiMan
 {
     // Klassen för Kaststjärnor
     class Throwingstar : Positions

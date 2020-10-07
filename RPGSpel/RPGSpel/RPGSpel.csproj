@@ -46,6 +46,11 @@
     <Compile Include="Items\Armor.cs" />
     <Compile Include="Items\HealthPotion.cs" />
     <Compile Include="Items\Note.cs" />
+    <Compile Include="MainGame\Game.cs" />
+    <Compile Include="Player\PlayerAttributes.cs" />
+    <Compile Include="World\GameWorld.cs" />
+    <Compile Include="Player\Player.cs" />
+    <Compile Include="NPC\Enemy.cs" />
     <Compile Include="MainGame\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Items\Throwingstar.cs" />

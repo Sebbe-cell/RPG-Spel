@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace speltest
+namespace PepsiMan
 {
     class Note : Positions
     {
