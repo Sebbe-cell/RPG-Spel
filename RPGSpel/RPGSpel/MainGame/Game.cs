@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading;
 
 namespace PepsiMan
 {
     class Game
-    {   // fields som ska ge plats för klass objekten när de instantieras. 
+    {
         public GameWorld MyWorld;
         public Player CurrentPlayer;
         public Enemy CurrentEnemy;
@@ -16,14 +17,13 @@ namespace PepsiMan
         public Note CurrentNote;
         public Enemy CurrentEnemy3;
 
-
         public void Start()
         {
             Console.Title = "The Game";
-            Console.OutputEncoding = System.Text.Encoding.Unicode; 
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
             Console.CursorVisible = false;
             string[,] grid =
-            { // 2d array som används som argument när draw metoden i GameWorld ska rita ut spelet. 
+            {
 
                 { "╔", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═","═", "═","╗" },
                 { "║", "H", "O", "M", "E", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
@@ -51,8 +51,9 @@ namespace PepsiMan
                 { "╚", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "╩", "═", "═", "═", "═", "═", "═","═", "═","╝" },
             };
 
-            // objekt av de olika klasserna instantieras, med 2d array/ positioner som argument. 
+
             MyWorld = new GameWorld(grid);
+
             CurrentEnemy = new Enemy(4, 8);
             CurrentEnemy2 = new Enemy(26, 21);
             CurrentPlayer = new Player(6, 3);
@@ -62,12 +63,11 @@ namespace PepsiMan
             CurrentArmor = new Armor(26, 15);
             CurrentNote = new Note(1, 5);
             CurrentEnemy3 = new Enemy(6, 15);
-            CurrentSalesman = new Salesman(26, 5);
 
             RunGameLoop();
         }
 
-        // Ritar upp  spelplanen och alla karaktärer i spelvärlden. Ingår i RunGameLoop().
+        // Ritar upp alla karaktärer i spelvärlden.
         private void DrawFrame()
         {
             Console.Clear();
@@ -81,7 +81,6 @@ namespace PepsiMan
             CurrentArmor.Draw();
             CurrentNote.Draw();
             CurrentEnemy3.Draw();
-
         }
 
         // Visar upp startrutan och ingenting annat, första som syns i konsolen.
@@ -107,7 +106,7 @@ namespace PepsiMan
 
             Console.WriteLine("\n---- Credits: ----");
             Console.WriteLine("Hafsa");
-            Thread.Sleep(1000); // ger några ms mellan rum innan nästa mening kommer upp. 
+            Thread.Sleep(1000);
             Console.WriteLine("Linus");
             Thread.Sleep(1000);
             Console.WriteLine("Och Sebastian");
@@ -118,15 +117,8 @@ namespace PepsiMan
 
         }
 
-       
 
-
-
-
-
-
-
-        static Random rng = new Random(); // Rndom instantieras för Battle metoden. 
+        static Random rng = new Random();
 
         public static void FirstEncounter()
         {
@@ -202,18 +194,18 @@ namespace PepsiMan
             Console.Clear();
         }
 
-        private void HandlePlayerInput() // METOD med switch som hanterar inputen från användaren. Från de fyra piltangenterna. 
+        private void HandlePlayerInput()
         {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true); 
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
             switch (key)
             {
-                case ConsoleKey.UpArrow: 
-                    if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y - 1)) // kollar först om positionen går att 
-                    {                                                                     // möjlig att gå på. om den gör det
-                        CurrentPlayer.Y -= 1;                                             // returneras bool true. och spelaren rör
-                    }                                                                 // sig bakåt i y led, dvs uppåt med en position.
-                    break;                                                              // osv..
+                case ConsoleKey.UpArrow:
+                    if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y - 1))
+                    {
+                        CurrentPlayer.Y -= 1;
+                    }
+                    break;
                 case ConsoleKey.DownArrow:
                     if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y + 1))
                     {
@@ -237,7 +229,7 @@ namespace PepsiMan
             }
         }
 
-        public static void Battle(string name, int power, int health) // METODEN Battle som startas när man träffar en enemy av olika slag.
+        public static void Battle(string name, int power, int health)
         {
             string enemyName = "";
             int enemyDmg = 0;
@@ -394,9 +386,9 @@ namespace PepsiMan
         }
 
 
-        private void RunGameLoop()  // METOD som håller igång spelet, med de andra relevanta metoderna i den. 
-        {                           // GameStartScreen, DraFrame, HandlePlayerInput, 
-            GameStartScreen(); 
+        private void RunGameLoop()
+        {
+            GameStartScreen();
             while (true)
             {
                 DrawFrame();

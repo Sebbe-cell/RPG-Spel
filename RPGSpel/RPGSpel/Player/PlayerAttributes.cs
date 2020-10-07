@@ -1,6 +1,6 @@
 ﻿namespace PepsiMan
 {
-    class PlayerAttributes // spelarens atttribut som används vid battle med enemys etc. 
+    class PlayerAttributes
     {
 
         public int coins = 0;

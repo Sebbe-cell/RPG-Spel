@@ -8,7 +8,7 @@ namespace PepsiMan
         public string SpecialMarker;
         public ConsoleColor SpecialColor;
 
-        public Throwingstar(int intX, int intY) //KONSTRUKTOR
+        public Throwingstar(int intX, int intY)
         {
             X = intX;
             Y = intY;

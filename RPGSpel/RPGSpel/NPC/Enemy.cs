@@ -7,7 +7,7 @@ namespace PepsiMan
         public string EnemyMarker;
         public ConsoleColor EnemyColor;
 
-        public Enemy(int intX, int intY) // KONTRUKTOR
+        public Enemy(int intX, int intY)
         {
             X = intX;
             Y = intY;
