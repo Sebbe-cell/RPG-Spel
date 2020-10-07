@@ -11,7 +11,7 @@ using System.Data.SqlTypes;
 
 namespace speltest
 {
-    //Hallå
+    
     // Commit - Sebbe
     // Test2
     // hej o hå. =)
