@@ -11,7 +11,7 @@ using System.Data.SqlTypes;
 
 namespace speltest
 {
-    
+
     // Commit - Sebbe
     // Test2
     // hej o hå. =)
@@ -135,28 +135,6 @@ namespace speltest
             Console.ForegroundColor = ArmorColor;
             Console.SetCursorPosition(X, Y);
             Console.Write(ArmorMarker);
-            Console.ResetColor();
-        }
-    }
-
-    class Note : Positions
-    {
-        public string NoteMarker;
-        public ConsoleColor NoteColor;
-
-        public Note(int intX, int intY)
-        {
-            X = intX;
-            Y = intY;
-            NoteMarker = "\x25b2";
-            NoteColor = ConsoleColor.White;
-        }
-
-        public void Draw()
-        {
-            Console.ForegroundColor = NoteColor;
-            Console.SetCursorPosition(X, Y);
-            Console.Write(NoteMarker);
             Console.ResetColor();
         }
     }
