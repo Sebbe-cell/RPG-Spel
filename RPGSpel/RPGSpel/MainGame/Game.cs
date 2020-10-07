@@ -548,7 +548,8 @@ namespace PepsiMan
                 }
 
                 if (CurrentPlayer.X == CurrentEnemy2.X && CurrentPlayer.Y == CurrentEnemy2.Y)
-                {
+                { // när spelaren står på samma position som enemy2. så förflyttas karaktären utanför spelplanen. Sen tillkallas 
+                  // 2ndencounter metoden, och i den finns battlemetoden....
                     CurrentEnemy2.Draw();
                     CurrentEnemy2 = new Enemy(36, 26);
                     SecondEncounter();

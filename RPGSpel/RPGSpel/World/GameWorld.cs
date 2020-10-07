@@ -11,7 +11,7 @@ namespace PepsiMan
 
         public GameWorld(string[,] grid) // KONSTRUKTOR med 2dArray som parameter. 2dArrayen skapas i "Game"klassen.
         {                                // rows och cols int värde fås genom att kalla på Getlength metoden.
-            Grid = grid;                 // som är en Array klass metod, metoden räknar ut en dimensionlängd. 
+            Grid = grid;                 // som är en Array klass metod, metoden räknar ut en dimensionlängd.  
             Rows = Grid.GetLength(0);
             Cols = Grid.GetLength(1);
         }
