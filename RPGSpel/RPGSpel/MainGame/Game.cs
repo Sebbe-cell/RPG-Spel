@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPGSpel.NPC;
+using System;
 using System.Security.Claims;
 using System.Threading;
 
@@ -16,6 +17,8 @@ namespace PepsiMan
         public Armor CurrentArmor;
         public Note CurrentNote;
         public Enemy CurrentEnemy3;
+        public Shopkeep CurrentShopKeep;
+        public Chest CurrentChest;
 
         public void Start()
         {
@@ -25,10 +28,10 @@ namespace PepsiMan
             string[,] grid =
             {
 
-                { "╔", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═","═", "═","╗" },
-                { "║", "H", "O", "M", "E", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
+                { "╔", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═","═", "═","╗" },
+                { "║", "H", "O", "M", "E", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "S", "T", "O", "R", "E", "║", " ", " ", " ", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "╚", "═", "═", " ", " ","═", "═","╣" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "╠", "═", "═", "═", "═", "═", "═", "═", "╝", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
@@ -59,10 +62,12 @@ namespace PepsiMan
             CurrentPlayer = new Player(6, 3);
             CurrentHP = new HealthPotion(10, 9);
             CurrentHP2 = new HealthPotion(4, 20);
-            SpecialAtt = new Throwingstar(25, 2);
+            SpecialAtt = new Throwingstar(16, 2);
             CurrentArmor = new Armor(26, 15);
             CurrentNote = new Note(1, 5);
             CurrentEnemy3 = new Enemy(6, 15);
+            CurrentShopKeep = new Shopkeep(31, 1);
+            CurrentChest = new Chest(4, 15);
 
             RunGameLoop();
         }
@@ -81,6 +86,8 @@ namespace PepsiMan
             CurrentArmor.Draw();
             CurrentNote.Draw();
             CurrentEnemy3.Draw();
+            CurrentShopKeep.Draw();
+            CurrentChest.Draw();
         }
 
         // Visar upp startrutan och ingenting annat, första som syns i konsolen.
@@ -119,6 +126,77 @@ namespace PepsiMan
 
 
         static Random rng = new Random();
+
+        public static void Chest()
+        {
+            Console.Clear();
+            Console.WriteLine("Du vandrar längs vägen och hittar en gammal skrutten kista, i bältet kommer du på att du har en dolk, du tar fram den och knäcker upp låset");
+            Console.WriteLine("I kistan hittar du 15 coins!");
+            Program.currentPlayer.coins += 15;
+            Console.WriteLine("Du har nu : " + Program.currentPlayer.coins + " coins i din läderpung");
+            Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
+            Console.ReadKey();
+        }
+
+        public static void Store()
+        {
+            string input;
+
+            Console.Clear();
+            Console.WriteLine("Hej där främling! Är du här för att köpa något?");
+            Console.WriteLine("---- (J)a ---- (N)ej ----");
+            input = Console.ReadLine();
+
+            if (input.ToLower() == "j")
+            {
+                Console.Clear();
+                Console.WriteLine("Alright! Vad vill du köpa?");
+                Console.WriteLine("");
+                Console.WriteLine("╔════════════════════╗");
+                Console.WriteLine("║(K)aststjärna - 10c ║");
+                Console.WriteLine("║(A)rmor       - 20c ║");
+                Console.WriteLine("║                    ║");
+                Console.WriteLine("╚════════════════════╝");
+                Console.WriteLine("");
+                string a = Console.ReadLine();
+                if (a.ToLower() == "k" && Program.currentPlayer.coins >= 10)
+                {
+                    Console.Clear();
+                    Program.currentPlayer.special += 1;
+                    Program.currentPlayer.coins -= 10;
+                    Console.WriteLine("Du har nu köpt en kaststjärna!");
+                    Console.WriteLine("Du har nu : " + Program.currentPlayer.special + " kaststjärnor i ditt bälte");
+                    Console.ReadKey();
+                }
+                else if (a.ToLower() == "a" && Program.currentPlayer.coins >= 20)
+                {
+                    Console.Clear();
+                    Program.currentPlayer.armorValue += 1;
+                    Program.currentPlayer.coins -= 20;
+                    Console.WriteLine("Du har nu köpt en armor!");
+                    Console.WriteLine("Du har nu rustningsvärde: " + Program.currentPlayer.armorValue);
+                    Console.ReadKey();
+
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Inte tillräckligt med coins, kom tillbaka när du kan betala!");
+                    Console.ReadKey();
+                }
+            }
+            else if (input.ToLower() == "n")
+            {
+                Console.Clear();
+                Console.WriteLine("Okej då, sluta då störa mig.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("Ursäkta?");
+                Console.ReadKey();
+            }
+        }
 
         public static void FirstEncounter()
         {
@@ -482,6 +560,20 @@ namespace PepsiMan
                     else
                         continue;
 
+                }
+
+                if (CurrentPlayer.X == CurrentShopKeep.X && CurrentPlayer.Y == CurrentShopKeep.Y)
+                {
+                    Store();
+                    continue;
+                }
+
+                if (CurrentPlayer.X == CurrentChest.X && CurrentPlayer.Y == CurrentChest.Y)
+                {
+                    CurrentChest.Draw();
+                    CurrentChest = new Chest(36, 24);
+                    Chest();
+                    continue;
                 }
 
             }
