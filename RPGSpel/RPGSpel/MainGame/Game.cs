@@ -6,7 +6,7 @@ using System.Threading;
 namespace PepsiMan
 {
     class Game
-    {
+    {   // fields som ska ge plats för klass objekten när de instantieras.
         public GameWorld MyWorld;
         public Player CurrentPlayer;
         public Enemy CurrentEnemy;
@@ -26,7 +26,7 @@ namespace PepsiMan
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             Console.CursorVisible = false;
             string[,] grid =
-            {
+            { // 2d array som används som argument när draw metoden i GameWorld ska rita ut spelet.
 
                 { "╔", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═","═", "═","╗" },
                 { "║", "H", "O", "M", "E", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "S", "T", "O", "R", "E", "║", " ", " ", " ", " "," ", " ","║" },
@@ -54,7 +54,7 @@ namespace PepsiMan
                 { "╚", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "╩", "═", "═", "═", "═", "═", "═","═", "═","╝" },
             };
 
-
+            // objekt av de olika klasserna instantieras, med 2d array/ positioner som argument. 
             MyWorld = new GameWorld(grid);
 
             CurrentEnemy = new Enemy(4, 8);
@@ -72,7 +72,7 @@ namespace PepsiMan
             RunGameLoop();
         }
 
-        // Ritar upp alla karaktärer i spelvärlden.
+        // Ritar upp  spelplanen och alla karaktärer i spelvärlden. Ingår i RunGameLoop().
         private void DrawFrame()
         {
             Console.Clear();
@@ -113,7 +113,7 @@ namespace PepsiMan
 
             Console.WriteLine("\n---- Credits: ----");
             Console.WriteLine("Hafsa");
-            Thread.Sleep(1000);
+            Thread.Sleep(1000); // ger några ms mellan rum innan nästa mening kommer upp.
             Console.WriteLine("Linus");
             Thread.Sleep(1000);
             Console.WriteLine("Och Sebastian");
@@ -125,7 +125,7 @@ namespace PepsiMan
         }
 
 
-        static Random rng = new Random();
+        static Random rng = new Random(); // Rndom instantieras för Battle metoden.
 
         public static void Chest()
         {
@@ -272,18 +272,18 @@ namespace PepsiMan
             Console.Clear();
         }
 
-        private void HandlePlayerInput()
+        private void HandlePlayerInput() // METOD med switch som hanterar inputen från användaren. Från de fyra piltangenterna.
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             ConsoleKey key = keyInfo.Key;
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y - 1))
-                    {
-                        CurrentPlayer.Y -= 1;
-                    }
-                    break;
+                    if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y - 1)) // kollar först om positionen går att
+                    {                                                                     // möjlig att gå på. om den gör det
+                        CurrentPlayer.Y -= 1;                                             // returneras bool true. och spelaren rör
+                    }                                                                     // sig bakåt i y led, dvs uppåt med en position.  
+                    break;                                                                //osv..
                 case ConsoleKey.DownArrow:
                     if (MyWorld.IsPositionWalkable(CurrentPlayer.X, CurrentPlayer.Y + 1))
                     {
@@ -307,7 +307,7 @@ namespace PepsiMan
             }
         }
 
-        public static void Battle(string name, int power, int health)
+        public static void Battle(string name, int power, int health) // METODEN Battle som startas när man träffar en enemy av olika slag.
         {
             string enemyName = "";
             int enemyDmg = 0;
@@ -464,8 +464,8 @@ namespace PepsiMan
         }
 
 
-        private void RunGameLoop()
-        {
+        private void RunGameLoop()  // METOD som håller igång spelet, med de andra relevanta metoderna i den.
+        {                           // GameStartScreen, DraFrame, HandlePlayerInput,
             GameStartScreen();
             while (true)
             {
