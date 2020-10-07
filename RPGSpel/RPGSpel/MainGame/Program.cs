@@ -3,9 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Media;
-using System.Security.Cryptography;
 using System.Net;
-using System.Data.SqlTypes;
 
 namespace PepsiMan
 {
