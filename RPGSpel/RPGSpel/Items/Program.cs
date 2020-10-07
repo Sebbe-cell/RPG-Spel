@@ -48,52 +48,6 @@ namespace speltest
 
     }
 
-    // Klassen för HP
-    class HealthPotion : Positions
-    {
-        public string HPMarker;
-        public ConsoleColor HPColor;
-
-        public HealthPotion(int intX, int intY)
-        {
-            X = intX;
-            Y = intY;
-            HPMarker = "\x0488";
-            HPColor = ConsoleColor.Cyan;
-        }
-
-        public void Draw()
-        {
-            Console.ForegroundColor = HPColor;
-            Console.SetCursorPosition(X, Y);
-            Console.Write(HPMarker);
-            Console.ResetColor();
-        }
-    }
-
-    // Klassen för Kaststjärnor
-    class Throwingstar : Positions
-    {
-        public string SpecialMarker;
-        public ConsoleColor SpecialColor;
-
-        public Throwingstar(int intX, int intY)
-        {
-            X = intX;
-            Y = intY;
-            SpecialMarker = "\x1D74";
-            SpecialColor = ConsoleColor.Yellow;
-        }
-
-        public void Draw()
-        {
-            Console.ForegroundColor = SpecialColor;
-            Console.SetCursorPosition(X, Y);
-            Console.Write(SpecialMarker);
-            Console.ResetColor();
-        }
-    }
-
     // Klassen för fiender
     class Enemy : Positions
     {
@@ -113,28 +67,6 @@ namespace speltest
             Console.ForegroundColor = EnemyColor;
             Console.SetCursorPosition(X, Y);
             Console.Write(EnemyMarker);
-            Console.ResetColor();
-        }
-    }
-
-    class Armor : Positions
-    {
-        public string ArmorMarker;
-        public ConsoleColor ArmorColor;
-
-        public Armor(int intX, int intY)
-        {
-            X = intX;
-            Y = intY;
-            ArmorMarker = "\x20aa";
-            ArmorColor = ConsoleColor.DarkGray;
-        }
-
-        public void Draw()
-        {
-            Console.ForegroundColor = ArmorColor;
-            Console.SetCursorPosition(X, Y);
-            Console.Write(ArmorMarker);
             Console.ResetColor();
         }
     }
