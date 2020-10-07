@@ -3,7 +3,7 @@
     class PlayerAttributes
     {
 
-        public int coins = 0;
+        public int coins = 20;
         public int playerHealth = 10;
         public int damage = 1;
         public int armorValue = 0;
