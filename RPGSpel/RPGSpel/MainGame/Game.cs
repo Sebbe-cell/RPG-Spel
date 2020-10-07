@@ -19,6 +19,8 @@ namespace PepsiMan
         public Enemy CurrentEnemy3;
         public Shopkeep CurrentShopKeep;
         public Chest CurrentChest;
+        public Enemy CurrentEnemy4;
+        public Chest CurrentChest2;
 
         public void Start()
         {
@@ -35,11 +37,11 @@ namespace PepsiMan
                 { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "╠", "═", "═", "═", "═", "═", "═", "═", "╝", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "╔", "═","═", "═","╣" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "║", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "║", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "╚", "═","═", "═","╣" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
@@ -68,6 +70,8 @@ namespace PepsiMan
             CurrentEnemy3 = new Enemy(6, 15);
             CurrentShopKeep = new Shopkeep(31, 1);
             CurrentChest = new Chest(4, 15);
+            CurrentEnemy4 = new Enemy(30, 8);
+            CurrentChest2 = new Chest(32, 10);
 
             RunGameLoop();
         }
@@ -88,6 +92,8 @@ namespace PepsiMan
             CurrentEnemy3.Draw();
             CurrentShopKeep.Draw();
             CurrentChest.Draw();
+            CurrentEnemy4.Draw();
+            CurrentChest2.Draw();
         }
 
         // Visar upp startrutan och ingenting annat, första som syns i konsolen.
@@ -126,6 +132,7 @@ namespace PepsiMan
 
 
         static Random rng = new Random(); // Rndom instantieras för Battle metoden.
+        static Random drop = new Random();
 
         public static void Chest() //Rutan som visas upp när man möter Skattkistan. 
         {
@@ -196,6 +203,17 @@ namespace PepsiMan
                 Console.WriteLine("Ursäkta?");
                 Console.ReadKey();
             }
+        }
+
+        public static void Guard()
+        {
+            Console.Clear();
+            Console.WriteLine("Du ser en gammalt övergivet fort och vid dörren upptäcker du ett vaknade skelett..");
+            Console.WriteLine("Som förmodligen skyddar något värdefullt från sitt liv bland de levende.");
+            Console.WriteLine("Du drar ditt svärd och attackerar han.");
+            Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
+            Console.ReadKey();
+            Battle("Guarding Skeleton", 1, 18);
         }
 
         public static void FirstEncounter()
@@ -452,14 +470,27 @@ namespace PepsiMan
                 {
                     Console.Clear();
                     Console.WriteLine("Du dödade " + enemyName + "!!");
-                    Console.WriteLine("Du böjer dig ner över din nu döda fiende som droppar en kaststjärna!" + "\nDu tar upp den och förvarar den i ditt bälte från och med nu.");
-                    Program.currentPlayer.special += 1;
-                    Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
-                    Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
-                    Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
+                    int c = Program.currentPlayer.coins;
+                    int w = Program.currentPlayer.wepValue;
+
+                        Console.WriteLine("Du böjer dig ner över din nu döda fiende som droppar en slipsten för ditt vapen!" + "\nDu kommer nu att göra mer skada på dina fiender!");
+                        Program.currentPlayer.wepValue += 1;
+                        Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
+                        Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
+                        Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
+                    Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
+                }
+                //Console.ReadKey();
+
+                if (enemyName == "Guarding Skeleton" && enemyHealth <= 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Du attackerar och drar ditt svärd längs med halsen på skelettet, hans huvud faller till marken och du fortsätter in..");
+                    Console.WriteLine("Du hittar även några coins påväg in som du samlar upp.");
+                    Program.currentPlayer.coins += 5;
+                    Console.WriteLine("Du har nu: " + Program.currentPlayer.coins + " coins.");
                 }
                 Console.ReadKey();
-
             }
         }
 
@@ -531,6 +562,22 @@ namespace PepsiMan
 
                 }
 
+                if (CurrentPlayer.X == CurrentEnemy4.X && CurrentPlayer.Y == CurrentEnemy4.Y)
+                {
+
+                    CurrentEnemy4.Draw();
+                    CurrentEnemy4 = new Enemy(38, 26);
+                    Guard();
+                    if (Program.currentPlayer.playerHealth <= 0)
+                    {
+                        GameOverScreen();
+                        Environment.Exit(0);
+                    }
+                    else
+                        continue;
+
+                }
+
                 if (CurrentPlayer.X == CurrentEnemy3.X && CurrentPlayer.Y == CurrentEnemy3.Y)
                 {
 
@@ -573,6 +620,14 @@ namespace PepsiMan
                 {
                     CurrentChest.Draw();
                     CurrentChest = new Chest(36, 24);
+                    Chest();
+                    continue;
+                }
+
+                if (CurrentPlayer.X == CurrentChest2.X && CurrentPlayer.Y == CurrentChest2.Y)
+                {
+                    CurrentChest2.Draw();
+                    CurrentChest2 = new Chest(36, 29);
                     Chest();
                     continue;
                 }
