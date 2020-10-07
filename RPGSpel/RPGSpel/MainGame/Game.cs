@@ -496,7 +496,7 @@ namespace PepsiMan
 
 
         private void RunGameLoop()  // METOD som håller igång spelet, med de andra relevanta metoderna i den.
-        {                           // GameStartScreen, DraFrame, HandlePlayerInput,
+        {                           // GameStartScreen, DraFrame, HandlePlayerInput,,
             GameStartScreen();
             while (true)
             {
