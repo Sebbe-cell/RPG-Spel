@@ -11,6 +11,7 @@
         public int wepValue = 1;
         public int special = 2;
         public int specialValue = 6;
+        public int pet = 0;
 
     }
 }
