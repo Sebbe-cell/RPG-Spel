@@ -306,25 +306,6 @@ namespace PepsiMan
             Console.Clear();
         }
 
-        public static void Inventory()
-        {
-            Console.Clear();
-            Console.WriteLine("Your Inventory: ");
-            Console.WriteLine("\nKaststjärnor: " + Program.currentPlayer.special);
-            Console.WriteLine("Potions: " + Program.currentPlayer.HealthPotion);
-            Console.WriteLine("Coins: " + Program.currentPlayer.coins);
-            Console.WriteLine("--------------------");
-
-            Console.WriteLine("\nPlayer Status: ");
-            Console.WriteLine("\nHealth: " + Program.currentPlayer.playerHealth);
-            Console.WriteLine("ArmorValue: " + Program.currentPlayer.armorValue);
-            Console.WriteLine("WeaponValue: " + Program.currentPlayer.wepValue);
-            Console.WriteLine("--------------------");
-            Console.WriteLine("\nTryck på valfri knapp för att gå tillbaka.");
-            Console.ReadKey(true);
-            Console.Clear();
-        }
-
         private void HandlePlayerInput() // METOD med switch som hanterar inputen från användaren. Från de fyra piltangenterna.
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -683,12 +664,6 @@ namespace PepsiMan
                     CurrentChest2 = new Chest(36, 29);
                     Chest();
                     continue;
-                }
-
-                switch (ConsoleKey.Spacebar)
-                {
-                    default: Inventory();
-                        continue;
                 }
             }
         }
