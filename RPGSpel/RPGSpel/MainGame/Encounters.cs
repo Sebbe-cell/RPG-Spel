@@ -122,6 +122,7 @@ namespace PepsiMan
             Console.WriteLine("│      vad du vill göra med den.       │");
             Console.WriteLine("╰──────────────────────────────────────╯");
             Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Hitta hunden för att fortsätta interagera med ägaren. \nTryck på en knapp för att fortsätta.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.ReadKey();
@@ -152,6 +153,15 @@ namespace PepsiMan
                     Console.WriteLine("Den gamla mannen reser sig upp och tackar dig för information \nHan beger sig sedan ut till dina koordinater för att leta rätt på sin hund!");
                     Console.WriteLine("");
                     Console.WriteLine("Du vinkar han ajdö mot vad som säkert är hans sista resa.");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("╭──────────────────────────────────────╮");
+                    Console.WriteLine("│            QUEST COMPLETED!          │");
+                    Console.WriteLine("│                                      │");
+                    Console.WriteLine("│    Du ljög för mannen och behöll     │");
+                    Console.WriteLine("│               hunden.                │");
+                    Console.WriteLine("╰──────────────────────────────────────╯");
+                    Console.WriteLine("");
+                    Console.ForegroundColor = ConsoleColor.White;
                     OldmansJourny = 1;
                     Console.ReadKey();
                     Console.Clear();
@@ -166,7 +176,15 @@ namespace PepsiMan
                     Console.WriteLine("'Jaaaaaa! Där är du! Tack för att du hittade han. Nu till betalningen..");
                     Console.WriteLine("Han ger dig 30 coins för hjälpen. Du tackar och ber han hålla bättre koll på hunden i framtiden.");
                     Console.WriteLine("Den gamla mannen reser sig från bordet och går iväg med sin hund..");
-                    Console.WriteLine("Player coins: " + Program.currentPlayer.coins + ".");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("╭──────────────────────────────────────╮");
+                    Console.WriteLine("│            QUEST COMPLETED!          │");
+                    Console.WriteLine("│                                      │");
+                    Console.WriteLine("│    Du gav tillbaka hunden och fick   │");
+                    Console.WriteLine("│               30 coins!              │");
+                    Console.WriteLine("╰──────────────────────────────────────╯");
+                    Console.WriteLine("");
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.ReadKey();
                     Console.Clear();
 
