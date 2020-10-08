@@ -306,6 +306,25 @@ namespace PepsiMan
             Console.Clear();
         }
 
+        public static void Inventory()
+        {
+            Console.Clear();
+            Console.WriteLine("Your Inventory: ");
+            Console.WriteLine("\nKaststjärnor: " + Program.currentPlayer.special);
+            Console.WriteLine("Potions: " + Program.currentPlayer.HealthPotion);
+            Console.WriteLine("Coins: " + Program.currentPlayer.coins);
+            Console.WriteLine("--------------------");
+
+            Console.WriteLine("\nPlayer Status: ");
+            Console.WriteLine("\nHealth: " + Program.currentPlayer.playerHealth);
+            Console.WriteLine("ArmorValue: " + Program.currentPlayer.armorValue);
+            Console.WriteLine("WeaponValue: " + Program.currentPlayer.wepValue);
+            Console.WriteLine("--------------------");
+            Console.WriteLine("\nTryck på valfri knapp för att gå tillbaka.");
+            Console.ReadKey(true);
+            Console.Clear();
+        }
+
         private void HandlePlayerInput() // METOD med switch som hanterar inputen från användaren. Från de fyra piltangenterna.
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -487,25 +506,36 @@ namespace PepsiMan
                 {
                     Console.Clear();
                     Console.WriteLine("Du dödade " + enemyName + "!!");
-                    int c = Program.currentPlayer.coins;
-                    int w = Program.currentPlayer.wepValue;
 
-                        Console.WriteLine("Du böjer dig ner över din nu döda fiende som droppar en slipsten för ditt vapen!" + "\nDu kommer nu att göra mer skada på dina fiender!");
+                    int randomEnemyDrop = rng.Next(1, 3 + 1);
+
+                    if (randomEnemyDrop == 1)
+                    {
+                        Console.WriteLine("Du böjer dig ner över den döda " + enemyName + " som droppar en slipsten för ditt vapen!" + "\nDu kommer nu att göra mer skada på dina fiender!");
                         Program.currentPlayer.wepValue += 1;
                         Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
                         Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
                         Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
-                    Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
-                }
-                //Console.ReadKey();
-
-                if (enemyName == "Guarding Skeleton" && enemyHealth <= 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Du attackerar och drar ditt svärd längs med halsen på skelettet, hans huvud faller till marken och du fortsätter in..");
-                    Console.WriteLine("Du hittar även några coins påväg in som du samlar upp.");
-                    Program.currentPlayer.coins += 5;
-                    Console.WriteLine("Du har nu: " + Program.currentPlayer.coins + " coins.");
+                        Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
+                    }
+                    else if (randomEnemyDrop == 2)
+                    {
+                        Console.WriteLine("Du böjer dig ner över den döda " + enemyName + " som droppar en potion!");
+                        Program.currentPlayer.HealthPotion += 1;
+                        Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
+                        Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
+                        Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
+                        Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
+                    }
+                    else if (randomEnemyDrop == 3)
+                    {
+                        Console.WriteLine("Du böjer dig ner över den döda " + enemyName + " som droppar en kaststjärna!");
+                        Program.currentPlayer.special += 1;
+                        Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
+                        Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
+                        Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
+                        Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
+                    }                     
                 }
                 Console.ReadKey();
             }
@@ -591,7 +621,13 @@ namespace PepsiMan
                         Environment.Exit(0);
                     }
                     else
+                    {
+                        Console.WriteLine("Påväg in i fortet så hittar du några coins på marken som du plockar upp.");
+                        Program.currentPlayer.coins += 5;
+                        Console.WriteLine("Du har nu: " + Program.currentPlayer.coins + " coins.");
+                        Console.ReadKey();
                         continue;
+                    }
 
                 }
 
@@ -649,6 +685,11 @@ namespace PepsiMan
                     continue;
                 }
 
+                switch (ConsoleKey.Spacebar)
+                {
+                    default: Inventory();
+                        continue;
+                }
             }
         }
     }
