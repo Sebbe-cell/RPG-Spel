@@ -157,22 +157,24 @@ namespace PepsiMan
             if (input.ToLower() == "j")
             {
                 Console.Clear();
-                Console.WriteLine("Alright! Vad vill du köpa?");
+                Console.WriteLine("Låter klokt av dig! Vad vill du köpa?");
                 Console.WriteLine("");
                 Console.WriteLine("╔════════════════════╗");
                 Console.WriteLine("║(K)aststjärna - 10c ║");
                 Console.WriteLine("║(A)rmor       - 20c ║");
-                Console.WriteLine("║                    ║");
+                Console.WriteLine("║(P)otion      - 10c ║");
                 Console.WriteLine("╚════════════════════╝");
                 Console.WriteLine("");
+                Console.WriteLine("Dina coins: " + Program.currentPlayer.coins);
                 string a = Console.ReadLine();
                 if (a.ToLower() == "k" && Program.currentPlayer.coins >= 10) // om man svarat ja till köp samt valt item, så kontrolleras det även om man har tillräcklig med coins.
                 {
                     Console.Clear();
                     Program.currentPlayer.special += 1;
                     Program.currentPlayer.coins -= 10;
-                    Console.WriteLine("Du har nu köpt en kaststjärna!");
+                    Console.WriteLine("Smart val, kan komma till användning där ute..");
                     Console.WriteLine("Du har nu : " + Program.currentPlayer.special + " kaststjärnor i ditt bälte");
+                    Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + "coins.");
                     Console.ReadKey();
                 }
                 else if (a.ToLower() == "a" && Program.currentPlayer.coins >= 20)
@@ -180,8 +182,20 @@ namespace PepsiMan
                     Console.Clear();
                     Program.currentPlayer.armorValue += 1;
                     Program.currentPlayer.coins -= 20;
-                    Console.WriteLine("Du har nu köpt en armor!");
+                    Console.WriteLine("Du har nu köpt en armor, ingen väntan här utan du sätter på dig din nya rustning direkt.");
                     Console.WriteLine("Du har nu rustningsvärde: " + Program.currentPlayer.armorValue);
+                    Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + "coins.");
+                    Console.ReadKey();
+
+                }
+                else if (a.ToLower() == "p" && Program.currentPlayer.coins >= 20)
+                {
+                    Console.Clear();
+                    Program.currentPlayer.HealthPotion += 1;
+                    Program.currentPlayer.coins -= 10;
+                    Console.WriteLine("Ägaren kastar en potion till dig. 'Varsågod!'");
+                    Console.WriteLine("Du har nu: " + Program.currentPlayer.HealthPotion + " potions i din säck.");
+                    Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + "coins.");
                     Console.ReadKey();
 
                 }
@@ -189,6 +203,7 @@ namespace PepsiMan
                 {
                     Console.Clear();
                     Console.WriteLine("Inte tillräckligt med coins, kom tillbaka när du kan betala!");
+                    Console.WriteLine("Du har endast: " + Program.currentPlayer.coins + "coins.");
                     Console.ReadKey();
                 }
             }
@@ -200,6 +215,7 @@ namespace PepsiMan
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Ursäkta?");
                 Console.ReadKey();
             }
@@ -213,7 +229,7 @@ namespace PepsiMan
             Console.WriteLine("Du drar ditt svärd och attackerar han.");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Guarding Skeleton", 1, 18);
+            Battle("Guarding Skeleton", 3, 18);
         }
 
         public static void FirstEncounter()
@@ -226,14 +242,14 @@ namespace PepsiMan
             Battle("Raider", 1, 8); // Enemy 1 - Raider
         }
 
-        public static void SecondEncounter()
+        public static void BossFight()
         {
             Console.Clear();
             Console.WriteLine("Bortom ett berg ser du att torn stiga upp, du beslutar dig för att gå över berget mot tornet..");
             Console.WriteLine("Äntligen där! Väl framme öppnar du dörren och går du upp för trapporna när du möter..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Warlock", 4, 30); // Enemy 2 - Warlock
+            Battle("Warlock", 6, 40); // Enemy 2 - Warlock
 
         }
 
@@ -349,7 +365,8 @@ namespace PepsiMan
                 Console.WriteLine("╚════════════════════╝");
                 Console.WriteLine("");
                 Console.WriteLine("Health: " + Program.currentPlayer.playerHealth);
-                Console.WriteLine("ArmorValue: " + Program.currentPlayer.armorValue);
+                Console.WriteLine("Rustningsvärde: " + Program.currentPlayer.armorValue);
+                Console.WriteLine("Attack Damage: " + Program.currentPlayer.wepValue);
                 Console.WriteLine("\n--Inventory--");
                 Console.WriteLine("Potions: " + Program.currentPlayer.HealthPotion);
                 Console.WriteLine("Kaststjärnor: " + Program.currentPlayer.special);
@@ -599,7 +616,7 @@ namespace PepsiMan
                   // 2ndencounter metoden, och i den finns battlemetoden....
                     CurrentEnemy2.Draw();
                     CurrentEnemy2 = new Enemy(36, 26);
-                    SecondEncounter();
+                    BossFight();
                     if (Program.currentPlayer.playerHealth <= 0)
                     {
                         GameOverScreen();
