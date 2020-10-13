@@ -8,11 +8,9 @@ namespace PepsiMan
         public string PlayerMarker;
         public ConsoleColor PlayerColor;
 
-
-
         // KONTRUKTOR med X/Y positioner som parameter.
         // spelaren får en startposition,  
-        public Player(int initialX, int initialY) 
+        public Player (int initialX, int initialY)
         {
             X = initialX;
             Y = initialY;

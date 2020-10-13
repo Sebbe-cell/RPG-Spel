@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace PepsiMan
 {
-    class Encounters
+    class Encounters : BattleSecvence
     {
         //------------------------------------------STORE-----------------------------------------//
         //------------------------------------------STORE-----------------------------------------//
@@ -14,11 +14,11 @@ namespace PepsiMan
         public static void Store()
         {
             string input;
+            Console.Clear();
+            Console.WriteLine("Hello there " + Program.currentPlayer.playerRace + "! Are you here to buy something?");
 
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Hej där främling! Är du här för att köpa något?");
                 Console.WriteLine("╔════════════╗");
                 Console.WriteLine("║(J)a        ║");
                 Console.WriteLine("║(N)ej       ║");
@@ -28,41 +28,53 @@ namespace PepsiMan
                 if (input.ToLower() == "j")
                 {
                     Console.Clear();
+
+                    // Priset för en ny armor är spelarens nuvarande ArmorValue * 20c.
+                    int armor = 0;//Program.currentPlayer.armorValue * 20;
+
+                    if (Program.currentPlayer.armorValue == 0)
+                    {
+                        armor = 20;
+                    }
+                    else
+                        armor = Program.currentPlayer.armorValue * 20;
+
                     Console.WriteLine("Vad vill du köpa?");
                     Console.WriteLine("");
-                    Console.WriteLine("╔════════════════════╗");
-                    Console.WriteLine("║(K)aststjärna - 10c ║");
-                    Console.WriteLine("║(A)rmor       - 20c ║");
-                    Console.WriteLine("║(P)otion      - 10c ║");
-                    Console.WriteLine("╚════════════════════╝");
+                    tryagain:
+                    Console.WriteLine("╔════════════════════");
+                    Console.WriteLine("║(K)aststjärna - 10c ");
+                    Console.WriteLine("║(A)rmor       - " + armor + "c ");
+                    Console.WriteLine("║(P)otion      - 10c ");
+                    Console.WriteLine("╚════════════════════");
                     Console.WriteLine("");
                     Console.WriteLine("Dina coins: " + Program.currentPlayer.coins);
-                    string a = Console.ReadLine();
+                    string userInput = Console.ReadLine();
 
-                    if (a.ToLower() == "k" && Program.currentPlayer.coins >= 10) // om man svarat ja till köp samt valt item, så kontrolleras det även om man har tillräcklig med coins.
+                    if (userInput.ToLower() == "k" && Program.currentPlayer.coins >= 10) // om man svarat ja till köp samt valt item, så kontrolleras det även om man har tillräcklig med coins.
                     {
                         Console.Clear();
                         Program.currentPlayer.special += 1;
                         Program.currentPlayer.coins -= 10;
                         Console.WriteLine("Smart val, kan komma till användning där ute..");
                         Console.WriteLine("Du har nu : " + Program.currentPlayer.special + " kaststjärnor i ditt bälte");
-                        Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + "coins.");
+                        Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + " coins.");
                         Console.ReadKey();
                         continue;
                     }
-                    else if (a.ToLower() == "a" && Program.currentPlayer.coins >= 20)
+                    else if (userInput.ToLower() == "a" && Program.currentPlayer.coins >= armor)
                     {
                         Console.Clear();
                         Program.currentPlayer.armorValue += 1;
-                        Program.currentPlayer.coins -= 20;
-                        Console.WriteLine("Du har nu köpt en armor, ingen väntan här utan du sätter på dig din nya rustning direkt.");
+                        Program.currentPlayer.coins -= armor;
+                        Console.WriteLine("Du har nu köpt en ny armor, ingen väntan här utan du sätter på dig din nya rustning direkt.");
                         Console.WriteLine("Du har nu rustningsvärde: " + Program.currentPlayer.armorValue);
-                        Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + "coins.");
+                        Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + " coins.");
                         Console.ReadKey();
                         continue;
 
                     }
-                    else if (a.ToLower() == "p" && Program.currentPlayer.coins >= 20)
+                    else if (userInput.ToLower() == "p" && Program.currentPlayer.coins >= 20)
                     {
                         Console.Clear();
                         Program.currentPlayer.HealthPotion += 1;
@@ -74,12 +86,21 @@ namespace PepsiMan
                         continue;
 
                     }
+                    else if (userInput.ToLower() != "p" || userInput.ToLower() != "a" || userInput.ToLower() != "k")
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Ursäkta, vad ville du handla sa du?");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        goto tryagain;
+                    }
                     else
                     {
                         Console.Clear();
                         Console.WriteLine("Inte tillräckligt med coins, kom tillbaka när du kan betala!");
-                        Console.WriteLine("Du har endast: " + Program.currentPlayer.coins + "coins.");
+                        Console.WriteLine("Du har endast: " + Program.currentPlayer.coins + " coins.");
                         Console.ReadKey();
+                        Console.Clear();
                         break;
                     }
                 }
@@ -93,7 +114,7 @@ namespace PepsiMan
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine("Ursäkta?");
+                    Console.WriteLine("Ursäkta mig? Förstog inte riktigt vad du sa " + Program.currentPlayer.playerRace + ". \nKan du repetera?");
                     Console.ReadKey();
                 }
             }
@@ -103,40 +124,66 @@ namespace PepsiMan
         //------------------------------------------STORE END-----------------------------------------//
         //------------------------------------------STORE END-----------------------------------------//
 
-
+        public static void Prisoner()
+        {
+            if (Program.currentPlayer.key == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("You have to save me! If you can kill that warlock over there you can get his key");
+                Console.WriteLine("And unlock these chains, please help me!");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else if(Program.currentPlayer.key == 1)
+            {
+                Console.Clear();
+                Console.WriteLine("You did it! You killed him! Help me unlock these chains and lets get out of here before more guards show up!");
+                Console.ReadKey();
+            }
+        }
 
         public static int OldmansPet { get; private set; }
         public static int OldmansJourny { get; private set; }
         public static void Quest()
         {
+            if (Program.currentPlayer.playerRace != "Orc")
+            {
+                Console.Clear();
+                Console.WriteLine("Väl inne i affären så ser du en gammal man sitta ensam vid ett bort till vänster om dig.");
+                Console.WriteLine("Han ser förbryllad ut och håller i ett hundkoppel.. Förmodligen en bortsprungen hund.");
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("╭──────────────────────────────────────╮");
+                Console.WriteLine("│             QUEST FOUND!             │");
+                Console.WriteLine("│                                      │");
+                Console.WriteLine("│    Hitta ägarens hund och bestäm     │");
+                Console.WriteLine("│      vad du vill göra med den.       │");
+                Console.WriteLine("╰──────────────────────────────────────╯");
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Hitta hunden för att fortsätta interagera med ägaren. \nTryck på en knapp för att fortsätta.");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Väl inne i affären så ser du en gammal man sitta ensam vid ett bort till vänster om dig.");
+                Console.WriteLine("Han ser förbryllad ut och håller i ett hundkoppel.. Förmodligen en bortsprungen hund.");
+                Console.WriteLine("Du går fram mot honom men innan du hinner sätta dig ner säger han: \n'Umgås inte med din sort " + Program.currentPlayer.playerRace + ".. Lämna mig ifred.'");
+                Console.ReadKey();
+            }
 
-            Console.Clear();
-            Console.WriteLine("Väl inne i affären så ser du en gammal man sitta ensam vid ett bort till vänster om dig.");
-            Console.WriteLine("Han ser förbryllad ut och håller i ett hundkoppel.. Förmodligen en bortsprungen hund.");
-            Console.WriteLine("");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("╭──────────────────────────────────────╮");
-            Console.WriteLine("│             QUEST FOUND!             │");
-            Console.WriteLine("│                                      │");
-            Console.WriteLine("│    Hitta ägarens hund och bestäm     │");
-            Console.WriteLine("│      vad du vill göra med den.       │");
-            Console.WriteLine("╰──────────────────────────────────────╯");
-            Console.WriteLine("");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Hitta hunden för att fortsätta interagera med ägaren. \nTryck på en knapp för att fortsätta.");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.ReadKey();
-            Console.Clear();
 
 
-
-            if(Program.currentPlayer.pet > 0)
+            if (Program.currentPlayer.pet > 0 && Program.currentPlayer.playerRace != "Orc")
             {
                 Console.WriteLine("Han kallar på dig och du sätter dig ner bredvid han.");
                 Console.WriteLine("'Du har inte av någon chans sätt min hund? Han sprang iväg för ett tag sen..'");
                 Console.WriteLine("'Jag kan betala dig bra om du har någon aning vart han är.'");
                 Thread.Sleep(2000);
-                again:
+            again:
                 Console.WriteLine("");
                 Console.WriteLine("╔══════════════════════════════════════════════════════════════════════════════════╗");
                 Console.WriteLine("║(L)jug - Du behåller hans hund och för dig själv.                                 ║");
@@ -171,7 +218,7 @@ namespace PepsiMan
                     Console.Clear();
                     Console.WriteLine("'Idag är din turdag! Kan det vara han?'. Du visar upp hunden och återförenar dom!");
                     Program.currentPlayer.pet -= 1;
-                    Program.currentPlayer.coins += 30;
+                    Program.currentPlayer.coins += 60;
                     OldmansPet = 1;
                     Console.WriteLine("'Jaaaaaa! Där är du! Tack för att du hittade han. Nu till betalningen..");
                     Console.WriteLine("Han ger dig 30 coins för hjälpen. Du tackar och ber han hålla bättre koll på hunden i framtiden.");
@@ -181,7 +228,7 @@ namespace PepsiMan
                     Console.WriteLine("│            QUEST COMPLETED!          │");
                     Console.WriteLine("│                                      │");
                     Console.WriteLine("│    Du gav tillbaka hunden och fick   │");
-                    Console.WriteLine("│               30 coins!              │");
+                    Console.WriteLine("│               60 coins!              │");
                     Console.WriteLine("╰──────────────────────────────────────╯");
                     Console.WriteLine("");
                     Console.ForegroundColor = ConsoleColor.White;
@@ -195,6 +242,52 @@ namespace PepsiMan
                     goto again;
                 }
             }
+
+            else
+            {
+                Console.Clear();
+            }
+        }
+        public static string guess { get; set; }
+        public static string answer { get; set; }
+        public static int numberOfGuesses { get; set; }
+
+        public static void Riddle()
+        {
+            answer = "footsteps";
+            guess = "";
+            numberOfGuesses = 5;
+            bool gameOver = false;
+
+                Console.Clear();
+                Console.WriteLine("För att komma in här behöver du svar på denna gåta:");
+                Console.WriteLine("The more you take, the more you leave behind. What am I?");
+
+                while (gameOver == false)
+                {
+                    guess = Console.ReadLine().ToLower();
+                    numberOfGuesses--;
+
+                    if (guess != answer && numberOfGuesses > 0)
+                    {
+                        Console.WriteLine("Fel, försök igen..");
+                        Console.WriteLine("Du har: " + numberOfGuesses + " gissningar kvar.");
+                    }
+                    else if (guess != answer && numberOfGuesses == 0)
+                    {
+                        Console.WriteLine("Du fick fem försök och lyckades inte, patetiskt..");
+                        Console.WriteLine("Får se om du är bättre på att slåss än lösa gåtor.");
+                        Console.ReadKey();
+                        gameOver = true;
+                    }
+                    else if (guess == answer)
+                    {
+                        Console.WriteLine("Aaah du lyckades! Imponerande. Varsågod, kom in..");
+                        gameOver = true;
+                        Console.ReadKey();
+                    }
+                }
+            Console.Clear();
         }
 
         public static void Pet()
@@ -261,7 +354,6 @@ namespace PepsiMan
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
         }
-
         public static void Guard()
         {
             Console.Clear();
@@ -270,7 +362,7 @@ namespace PepsiMan
             Console.WriteLine("Du drar ditt svärd och attackerar han.");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Guarding Skeleton", 3, 18);
+            Battle("Guarding Skeleton", 4, 18);
         }
 
         public static void FirstEncounter()
@@ -280,17 +372,18 @@ namespace PepsiMan
             Console.WriteLine("Han vänder sig om..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Raider", 1, 8); // Enemy 1 - Raider
+            Battle("Raider", 4, 8); // Enemy 1 - Raider
         }
 
         public static void BossFight()
         {
             Console.Clear();
-            Console.WriteLine("Bortom ett berg ser du att torn stiga upp, du beslutar dig för att gå över berget mot tornet..");
-            Console.WriteLine("Äntligen där! Väl framme öppnar du dörren och går du upp för trapporna när du möter..");
+            Console.WriteLine("Du har tillslut nått fram till slutet, en stor Warlock står med ryggen mot dig och ser ut att utföra någon ritual..");
+            Console.WriteLine("Du smyger dig framåt och drar ditt vapen, han har redan insett att du är där och vänder sig mot dig..");
+            Console.WriteLine("Runt hans hals hänger ett halsband med en nyckel..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Warlock", 6, 40); // Enemy 2 - Warlock
+            Battle("Warlock", 10, 40); // Enemy 2 - Warlock
 
         }
 
@@ -301,195 +394,8 @@ namespace PepsiMan
             Console.WriteLine("Han springer fort mot dig och ni börjar attackera varandra!");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
-            Battle("Zombie", 3, 6); // Enemy 3 - Zombie
-        }
-
-        static Random rng = new Random();
-        static Random drop = new Random();
-
-        public static void Battle(string name, int power, int health) // METODEN Battle som startas när man träffar en enemy av olika slag. man skriver in argument för parametrarna;
-        {                                                             // name, power, health. 
-            string enemyName = "";
-            int enemyDmg = 0;
-            int enemyHealth = 0;
-
-            enemyName = name;
-            enemyDmg = power;
-            enemyHealth = health;
-
-
-            while (enemyHealth > 0)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Enemy name: " + enemyName);
-                Console.WriteLine("Enemy power: " + enemyDmg + " Enemy HP: " + enemyHealth);
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("");
-                Console.WriteLine("╔════════════════════╗");
-                Console.WriteLine("║      (S)pecial     ║");
-                Console.WriteLine("║      (A)ttack      ║");
-                Console.WriteLine("║ (R)un       (H)eal ║");
-                Console.WriteLine("╚════════════════════╝");
-                Console.WriteLine("");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Health: " + Program.currentPlayer.playerHealth);
-                Console.WriteLine("Rustningsvärde: " + Program.currentPlayer.armorValue);
-                Console.WriteLine("Attack Damage: " + Program.currentPlayer.wepValue);
-                Console.WriteLine("Extra Damage from Pet: " + Program.currentPlayer.pet);
-                Console.WriteLine("\n--Inventory--");
-                Console.WriteLine("Potions: " + Program.currentPlayer.HealthPotion);
-                Console.WriteLine("Kaststjärnor: " + Program.currentPlayer.special);
-
-                string input = Console.ReadLine();
-
-                if (input.ToLower() == "a")
-                {
-                    Console.WriteLine("Du går till attack samtidigt som " + enemyName + "!");
-                    int damage = enemyDmg - Program.currentPlayer.armorValue;
-
-                    // spelaren attack slumpas fram mellan 0 och spelarens weaponvalue + ett tal mellan 1-4.
-                    int playerAttackValue = rng.Next(0, Program.currentPlayer.wepValue + Program.currentPlayer.pet) + rng.Next(1, 4);
-                    if (damage < 0)
-                        damage = 0;
-                    Console.WriteLine("Du förlorar " + damage + " HP och ger: " + playerAttackValue + " i skada");
-
-                    // uppdaterar spelaren HP.
-                    Program.currentPlayer.playerHealth -= damage;
-
-                    // uppdaterar fiendes HP.
-                    enemyHealth -= playerAttackValue;
-                    Console.WriteLine("Tryck på en knapp för att fortsätta.");
-
-                    if (Program.currentPlayer.playerHealth <= 0)
-                    {
-                        break;
-                    }
-
-                }
-
-                else if (input.ToLower() == "s")
-                {
-                    if (Program.currentPlayer.special == 0)
-                    {
-                        Console.WriteLine("Du drar din hand mot bältet där du förvarar dina stjärnor, men va? Ingenting där!");
-                        int damage = enemyDmg - Program.currentPlayer.armorValue;
-                        if (damage < 0)
-                            damage = 0;
-                        Program.currentPlayer.playerHealth -= damage;
-                        Console.WriteLine(enemyName + " träffar dig med att starkt slag och du förlorar " + damage + " health");
-
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Du backar tillbaka några steg och tar från din kaststjärna ur ditt bälte, du tar i och kastar den mot " + enemyName + ". \nEtt starkt slag!");
-                        int attack = rng.Next(3, Program.currentPlayer.specialValue) + rng.Next(1, 2);
-                        Program.currentPlayer.special -= 1;
-                        int damage = enemyDmg - Program.currentPlayer.armorValue;
-                        if (damage < 0)
-                            damage = 0;
-                        Console.WriteLine("Du förlorar " + damage + " HP och ger: " + attack + " i skada");
-                        Program.currentPlayer.playerHealth -= damage;
-                        enemyHealth -= attack;
-                        Console.WriteLine("Tryck på en knapp för att fortsätta");
-                    }
-                }
-
-                else if (input.ToLower() == "r")
-                {
-                    if (rng.Next(0, 2) == 0)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Du försöker fly från " + enemyName + ", han kastar sitt vapen mot dig" + "\noch träffar dig i ryggen.. du faller ner på marken och träffar huvudet illa");
-                        Console.WriteLine("Du blöder ut och ditt äventyr är över..");
-                        int damage = enemyDmg - Program.currentPlayer.armorValue;
-                        if (damage < 0)
-                            damage = 0;
-                        Program.currentPlayer.playerHealth = 0;
-                        Console.ReadKey();
-                        break;
-
-
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Du använder dina akrobatik-skills och lyckas med minsta möjliga marginal fly från " + enemyName + ".");
-                        Console.ReadKey();
-                        break;
-
-                    }
-                }
-                else if (input.ToLower() == "h")
-                {
-                    if (Program.currentPlayer.HealthPotion == 0)
-                    {
-                        Console.WriteLine("Du börjar gräva i din väska efter en potion, men förgäves.. Det enda du hittar är en tom burk NOCCO.");
-                        int damage = enemyDmg - Program.currentPlayer.armorValue;
-                        if (damage < 0)
-                            damage = 0;
-                        Program.currentPlayer.playerHealth -= damage;
-                        Console.WriteLine(enemyName + " träffar dig med att starkt slag och du förlorar " + damage + " health");
-                        break;
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Du börjar ivrigt leta i din väska efter en HP-Potion..");
-                        int potionValue = 5;
-                        Console.WriteLine("Du får " + potionValue + " HP");
-                        Program.currentPlayer.playerHealth += potionValue;
-                        Program.currentPlayer.HealthPotion -= 1;
-                        Console.WriteLine("Samtidigt som du grävde i väskan så skadade " + enemyName + " dig");
-                        int damage = (enemyDmg / 2) - Program.currentPlayer.armorValue;
-                        if (damage < 0)
-                            damage = 0;
-                        Console.WriteLine("Du förlorade " + damage + " hp");
-                        Console.WriteLine("Tryck på en knapp för att fortsätta");
-                    }
-
-                    Console.ReadKey();
-                }
-
-
-                if (enemyHealth <= 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Du dödade " + enemyName + "!!");
-
-                    int randomEnemyDrop = rng.Next(1, 3 + 1);
-
-                    if (randomEnemyDrop == 1)
-                    {
-                        Console.WriteLine("Du böjer dig ner över den döda " + enemyName + " som droppar en slipsten för ditt vapen!" + "\nDu kommer nu att göra mer skada på dina fiender!");
-                        Program.currentPlayer.wepValue += 1;
-                        Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
-                        Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
-                        Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
-                        Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
-                    }
-                    else if (randomEnemyDrop == 2)
-                    {
-                        Console.WriteLine("Du böjer dig ner över den döda " + enemyName + " som droppar en potion!");
-                        Program.currentPlayer.HealthPotion += 1;
-                        Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
-                        Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
-                        Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
-                        Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
-                    }
-                    else if (randomEnemyDrop == 3)
-                    {
-                        Console.WriteLine("Du böjer dig ner över den döda " + enemyName + " som droppar en kaststjärna!");
-                        Program.currentPlayer.special += 1;
-                        Console.WriteLine("\nPlayer HP = " + Program.currentPlayer.playerHealth);
-                        Console.WriteLine("Potions = " + Program.currentPlayer.HealthPotion);
-                        Console.WriteLine("Kaststjärnor = " + Program.currentPlayer.special);
-                        Console.WriteLine("Attackdamage = " + Program.currentPlayer.wepValue);
-                    }
-                }
-                Console.ReadKey();
-            }
-        }
+            Battle("Zombie", 6, 6); // Enemy 3 - Zombie
+        }       
     }
 }
+

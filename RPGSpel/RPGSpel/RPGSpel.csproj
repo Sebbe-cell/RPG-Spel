@@ -48,8 +48,10 @@
     <Compile Include="Items\HealthPotion.cs" />
     <Compile Include="Items\Note.cs" />
     <Compile Include="Items\Pet.cs" />
+    <Compile Include="MainGame\BattleSecvence.cs" />
     <Compile Include="MainGame\Encounters.cs" />
     <Compile Include="MainGame\Game.cs" />
+    <Compile Include="NPC\Prisoner.cs" />
     <Compile Include="NPC\QuestGiver.cs" />
     <Compile Include="NPC\Shopkeep.cs" />
     <Compile Include="Player\PlayerAttributes.cs" />
