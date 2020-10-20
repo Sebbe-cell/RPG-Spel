@@ -6,12 +6,16 @@ using System.Media;
 using System.Net;
 using System;
 using System.Threading;
+using RPGSpel.Player;
+using System.Security.Principal;
+using System.Diagnostics;
 
 namespace PepsiMan
 {
     class Program
     {
         public static PlayerAttributes currentPlayer = new PlayerAttributes();
+        public static PlayerBackpack currentBackPack = new PlayerBackpack();
 
         public static void Main(string[] args)
         {

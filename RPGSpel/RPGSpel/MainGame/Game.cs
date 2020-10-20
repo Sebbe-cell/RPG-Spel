@@ -1,6 +1,7 @@
 ﻿using RPGSpel.NPC;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -18,6 +19,8 @@ namespace PepsiMan
         public GameWorld MyWorld;
         public Player CurrentPlayer;
         public Enemy EnemyOne;
+        public Enemy RandomEnemy;
+        public Enemy RandomEnemyTwo;
         public Enemy Boss;
         public HealthPotion HealthPotionDrop;
         public HealthPotion HealthPotionDrop2;
@@ -33,9 +36,17 @@ namespace PepsiMan
         public QuestGiver QuestGiver1;
         public Pet Dog;
         public Prisoner PrisonerOne;
+        public Stable StableShop;
+        public Snake SnakeGame;
 
         public void Start()
         {
+            //Set resulution of console
+            int width = 120;
+            int height = 30;
+
+            Console.WindowHeight = height;
+            Console.WindowWidth = width;
             Console.Title = "Sine Qua Non";
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             Console.CursorVisible = false;
@@ -43,10 +54,10 @@ namespace PepsiMan
             { 
                 // 2D-Array som används som argument när draw metoden i GameWorld ska rita ut spelet.
 
-                { "╔", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═","═", "═","╗" },
-                { "║", "H", "O", "M", "E", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "S", "T", "O", "R", "E", "║", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " "," ", " ","║" },
-                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "╚", "═", "═", " ", " ","═", "═","╣" },
+                { "╔", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═", "═", "═", "╦", "═", "═", "═", "═","═", "═","╗" },
+                { "║", "H", "O", "M", "E", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " "," ", " ","║" },
+                { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "╚", " ", " ", "═", "═", "═", "═", "╩", "═", "═", " ", " ","═", "═","╣" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "║", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
                 { "╠", "═", "═", "═", "═", "═", "═", "═", "╝", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "," ", " ","║" },
@@ -78,22 +89,26 @@ namespace PepsiMan
             // Andra integern symboliserar den Vertikala linjen
 
             CurrentPlayer = new Player(6, 1);
-            EnemyOne = new Enemy(spawn.Next(2, 9), spawn.Next(8, 15));
+            EnemyOne = new Enemy(spawn.Next(2, 9), spawn.Next(8, 23));
             EnemyTwo = new Enemy(spawn.Next(2, 9), spawn.Next(16, 23));
             RiddleKeeper = new Enemy(30, 20);
             EnemyThree = new Enemy(30, 8);
             Boss = new Enemy(26, 21);
             ChestDrop = new Chest(spawn.Next(2,15), spawn.Next(8,15));
             ChestDropTwo = new Chest(32, 10);
-            HealthPotionDrop = new HealthPotion(10, 9);
-            HealthPotionDrop2 = new HealthPotion(4, 20);
+            HealthPotionDrop = new HealthPotion(spawn.Next(8, 15), spawn.Next(8, 23));
+            HealthPotionDrop2 = new HealthPotion(spawn.Next(8, 15), spawn.Next(8, 23));
             SpecialAtt = new Throwingstar(16, 2);
-            ArmorDrop = new Armor(26, 15);
+            ArmorDrop = new Armor(spawn.Next(2, 28), 15);
             NoteDrop = new Note(1, 5);
             ShopKeep = new Shopkeep(32, 1);
             QuestGiver1 = new QuestGiver(28, 2);
             Dog = new Pet(10, 1);
             PrisonerOne = new Prisoner(32, 22);
+            StableShop = new Stable(26, 2);
+            RandomEnemy = new Enemy(spawn.Next(2, 9), spawn.Next(8, 15));
+            RandomEnemyTwo = new Enemy(spawn.Next(8, 29), spawn.Next(7, 18));
+            SnakeGame = new Snake(22, 1);
 
             RunGameLoop();
         }
@@ -105,22 +120,22 @@ namespace PepsiMan
         {
             MyWorld.Draw();
             CurrentPlayer.Draw();
-            EnemyOne.Draw();
-            HealthPotionDrop.Draw();
-            HealthPotionDrop2.Draw();
-            Boss.Draw();
+            Boss.Draw(); EnemyOne.Draw(); EnemyTwo.Draw(); EnemyThree.Draw();
+            HealthPotionDrop.Draw(); HealthPotionDrop2.Draw();
             SpecialAtt.Draw();
             ArmorDrop.Draw();
             NoteDrop.Draw();
-            EnemyTwo.Draw();
             RiddleKeeper.Draw();
             ShopKeep.Draw();
             ChestDrop.Draw();
-            EnemyThree.Draw();
             ChestDropTwo.Draw();
             QuestGiver1.Draw();
             Dog.Draw();
             PrisonerOne.Draw();
+            StableShop.Draw();
+            RandomEnemy.Draw();
+            SnakeGame.Draw();
+            RandomEnemyTwo.Draw();
         }
         public void ChooseCharater()
         {
@@ -146,11 +161,16 @@ namespace PepsiMan
             }
             Console.Clear();
         again:
-            Console.WriteLine("Välj vad du ska spela som:");
+            Console.WriteLine("Välj vad du ska spela som:\n");
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("(O)rc - Stark karaktär med bra rustning, men fattig.");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("(H)uman - Medelstark karaktär med bra HP och en del coins.");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("(E)lf - Låg styrka men bra HP och mycket coins.");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("(D)warf - Bra attackskada och lagom mycket coins.");
+            Console.ForegroundColor = ConsoleColor.White;
             string input = Console.ReadLine();
             Console.Clear();
 
@@ -160,10 +180,11 @@ namespace PepsiMan
                 if (input.ToLower() == "o")
                 {
                     Program.currentPlayer.playerRace = "Orc";
+                    Console.WriteLine("Du har valt att spela som: Orc");
                     Console.WriteLine("Rustningsvärde: " + (Program.currentPlayer.armorValue = 3));
                     Console.WriteLine("Player Health: " + (Program.currentPlayer.playerHealth = 10));
                     Console.WriteLine("Attack styrka: " + (Program.currentPlayer.wepValue = 2));
-                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 25));
+                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 40));
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();
                     break;
@@ -171,10 +192,11 @@ namespace PepsiMan
                 else if (input.ToLower() == "h")
                 {
                     Program.currentPlayer.playerRace = "Human";
+                    Console.WriteLine("Du har valt att spela som: Human");
                     Console.WriteLine("Rustningsvärde: " + (Program.currentPlayer.armorValue = 1));
                     Console.WriteLine("Player Health: " + (Program.currentPlayer.playerHealth = 20));
                     Console.WriteLine("Attack styrka: " + (Program.currentPlayer.wepValue = 1));
-                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 60));
+                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 65));
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();
                     break;
@@ -182,10 +204,11 @@ namespace PepsiMan
                 else if (input.ToLower() == "d")
                 {
                     Program.currentPlayer.playerRace = "Dwarf";
-                    Console.WriteLine("Rustningsvärde: " + (Program.currentPlayer.armorValue = 1));
+                    Console.WriteLine("Du har valt att spela som: Dwarf");
+                    Console.WriteLine("Rustningsvärde: " + (Program.currentPlayer.armorValue = 2));
                     Console.WriteLine("Player Health: " + (Program.currentPlayer.playerHealth = 15));
                     Console.WriteLine("Attack styrka: " + (Program.currentPlayer.wepValue = 2));
-                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 45));
+                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 80));
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();
                     break;
@@ -193,10 +216,11 @@ namespace PepsiMan
                 else if (input.ToLower() == "e")
                 {
                     Program.currentPlayer.playerRace = "Elf";
+                    Console.WriteLine("Du har valt att spela som: Elf");
                     Console.WriteLine("Rustningsvärde: " + (Program.currentPlayer.armorValue = 0));
                     Console.WriteLine("Player Health: " + (Program.currentPlayer.playerHealth = 25));
                     Console.WriteLine("Attack styrka: " + (Program.currentPlayer.wepValue = 1));
-                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 80));
+                    Console.WriteLine("Coins: " + (Program.currentPlayer.coins = 70));
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();
                     break;
@@ -215,14 +239,37 @@ namespace PepsiMan
         // Visar upp startrutan och ingenting annat, första som syns i konsolen.
         public void MainMenu()
         {
-            Console.WriteLine("Välkommen till vårt spel!");
-            Console.WriteLine("\nInstruktioner");
+            Console.WriteLine(@"
+ ____ ___       __  .__  __  .__             ._____________                   __               __   
+|    |   \_____/  |_|__|/  |_|  |   ____   __| _/\______   \_______  ____    |__| ____   _____/  |_ 
+|    |   /    \   __\  \   __\  | _/ __ \ / __ |  |     ___/\_  __ \/  _ \   |  |/ __ \_/ ___\   __\
+|    |  /   |  \  | |  ||  | |  |_\  ___// /_/ |  |    |     |  | \(  <_> )  |  \  ___/\  \___|  |  
+|______/|___|  /__| |__||__| |____/\___  >____ |  |____|     |__|   \____/\__|  |\___  >\___  >__|  
+             \/                        \/     \/                         \______|    \/     \/      
+");
+            Console.WriteLine("Instruktioner:\n");
             Console.WriteLine("- Använd piltangenterna för att förflytta dig i världen");
             Console.WriteLine("- Special - Står för din speciella 'attack-move', i detta fall en Kaststjärna");
             Console.WriteLine("- Attack  - Du attackar med ditt vapen.");
-            Console.WriteLine("- Run     - Du försöker fly från fienden. (50/50-chans att du överlever.)");
+            Console.WriteLine("- Run     - Du försöker fly från fienden. (Men kommer med otur att ta skada.)");
             Console.WriteLine("- Heal    - Du använder en HP-Potion för att få tillbaka lite av din HP.");
-            Console.WriteLine("\nTryck på valfri tangent för att starta spelet.");
+            Console.WriteLine("- Store   - I världen finns det två butiker som du kan köpa föremål av, om du har tillräckligt med coins.");
+            Console.WriteLine("- Pets    - Det finns olika djur i världen som kan hjälpa dig att slåss mot fiender. Max 2 pets.\n");
+
+            string blink = "Tryck på valfri tangent för att starta spelet.";
+
+            while (!System.Console.KeyAvailable)
+            {
+                Console.Write(blink);
+                Thread.Sleep(650);
+
+                for (int j = 1; j <= blink.Length + 2; j++)
+                {
+                    Console.Write("\b" + (char)32 + "\b");
+                    if (j == blink.Length + 2) Thread.Sleep(650);
+                }
+            }
+
             Console.ReadKey(true);
             Console.Clear();
         }
@@ -364,7 +411,39 @@ namespace PepsiMan
 
                     EnemyOne.Draw();
                     EnemyOne = new Enemy(35, 26);
-                    FirstEncounter();
+                    RandomEncounters();
+                    if (Program.currentPlayer.playerHealth <= 0)
+                    {
+                        GameOverScreen();
+                        Environment.Exit(0);
+                    }
+                    else
+                        continue;
+
+                }
+
+                if (CurrentPlayer.X == RandomEnemy.X && CurrentPlayer.Y == RandomEnemy.Y)
+                {
+                    
+                    RandomEnemy.Draw();
+                    RandomEnemy = new Enemy(35, 26);
+                    RandomEncounters();
+                    if (Program.currentPlayer.playerHealth <= 0)
+                    {
+                        GameOverScreen();
+                        Environment.Exit(0);
+                    }
+                    else
+                        continue;
+
+                }
+
+                if (CurrentPlayer.X == RandomEnemyTwo.X && CurrentPlayer.Y == RandomEnemyTwo.Y)
+                {
+
+                    RandomEnemyTwo.Draw();
+                    RandomEnemyTwo = new Enemy(35, 26);
+                    RandomEncounters();
                     if (Program.currentPlayer.playerHealth <= 0)
                     {
                         GameOverScreen();
@@ -388,6 +467,7 @@ namespace PepsiMan
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("Påväg in i fortet så hittar du några coins på marken som du plockar upp.");
                         Program.currentPlayer.coins += 5;
                         Console.WriteLine("Du har nu: " + Program.currentPlayer.coins + " coins.");
@@ -455,7 +535,7 @@ namespace PepsiMan
                 {
                     ChestDropTwo.Draw();
                     ChestDropTwo = new Chest(36, 29);
-                    Chest();
+                    ChestTwo();
                     continue;
                 }
 
@@ -519,6 +599,57 @@ namespace PepsiMan
                     }
                     else
                         continue;
+                }
+
+                if (CurrentPlayer.X == StableShop.X && CurrentPlayer.Y == StableShop.Y)
+                {
+                    Stable();
+                }
+
+                if (CurrentPlayer.X == SnakeGame.X && CurrentPlayer.Y == SnakeGame.Y)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Välkommen till spelet ~Snake~");
+                    Console.WriteLine("För att spela detta spel krävs en insats på 30 coins.");
+                    Console.WriteLine("Du har totalt: " + Program.currentPlayer.coins + " coins.");
+                again:
+                    Console.WriteLine("Du får 1 coin per äpple. Vill du spela? (J)a eller (N)ej?");
+                    string player = Console.ReadLine();
+
+                    if (player.ToLower() == "j" && Program.currentPlayer.coins >= 30)
+                    {
+                        Program.currentPlayer.coins -= 30;
+                        Console.Clear();
+                        StartGame();
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Dina coins: " + Program.currentPlayer.coins);
+                        Console.ReadLine();
+                        Console.Clear();
+                    }
+                    else if (player.ToLower() == "n")
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Inget spel idag? Kom tillbaka när du vill för att spela.");
+                        Console.ReadLine();
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (player.ToLower() == "j" && Program.currentPlayer.coins < 30)
+                    {
+                        Console.WriteLine("Inte tillräckligt med coins. Du måste ha minst 30 coins för att spela.");
+                        Console.ReadLine();
+                        Console.Clear();
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ursäkta förstod inte riktigt vad du sa.");
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        goto again;
+                    }
                 }
             }
         }

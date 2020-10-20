@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
@@ -60,6 +63,8 @@ namespace PepsiMan
                         Console.WriteLine("Du har nu : " + Program.currentPlayer.special + " kaststjärnor i ditt bälte");
                         Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + " coins.");
                         Console.ReadKey();
+                        Console.Clear();
+                        Console.WriteLine("Buy more?");
                         continue;
                     }
                     else if (userInput.ToLower() == "a" && Program.currentPlayer.coins >= armor)
@@ -71,6 +76,8 @@ namespace PepsiMan
                         Console.WriteLine("Du har nu rustningsvärde: " + Program.currentPlayer.armorValue);
                         Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + " coins.");
                         Console.ReadKey();
+                        Console.Clear();
+                        Console.WriteLine("Buy more?");
                         continue;
 
                     }
@@ -83,15 +90,19 @@ namespace PepsiMan
                         Console.WriteLine("Du har nu: " + Program.currentPlayer.HealthPotion + " potions i din säck.");
                         Console.WriteLine("I din läderpung så har du nu: " + Program.currentPlayer.coins + "coins.");
                         Console.ReadKey();
+                        Console.Clear();
+                        Console.WriteLine("Buy more?");
                         continue;
 
                     }
-                    else if (userInput.ToLower() != "p" || userInput.ToLower() != "a" || userInput.ToLower() != "k")
+                    else if (userInput.ToLower() != "a" && Program.currentPlayer.coins >= armor || userInput.ToLower() != "k" && Program.currentPlayer.coins >= 10 || userInput.ToLower() != "p" && Program.currentPlayer.coins >= 10)
                     {
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ursäkta, vad ville du handla sa du?");
                         Console.ForegroundColor = ConsoleColor.White;
+                        Console.ReadKey();
+                        Console.Clear();
                         goto tryagain;
                     }
                     else
@@ -123,6 +134,165 @@ namespace PepsiMan
         //------------------------------------------STORE END-----------------------------------------//
         //------------------------------------------STORE END-----------------------------------------//
         //------------------------------------------STORE END-----------------------------------------//
+
+
+        public static void Stable()
+        {
+            string temp;
+
+                Console.Clear();
+                Console.WriteLine("Welcome to our stable!");
+                Console.WriteLine("Choose a pet to help you fight in the world outside, if you have the coins of course.");
+                Console.ReadKey();
+
+                List<string> Stable = new List<string>
+                {
+                "Press '1' for = Wolf - 30c",
+                "Press '2' for = Hound - 30c",
+                "Press '3' for = Winter Fox - 40c",
+                "Press '4' for = Welp Dragon - 40c",
+                "Press '5' for = Armored Wolf - 80c",
+                "Press '6' for = Saber Toothed Tiger - 100c"
+
+                };
+
+                while (true)
+                {
+                    returna:
+                    Console.WriteLine("Do you wish to buy anything today? (Y)es or (N)o");
+                    string input = Console.ReadLine();
+                    Console.Clear();
+
+                    if (input.ToLower() == "y" && Program.currentPlayer.playerPets < 2)
+                    {
+
+                        foreach (var pets in Stable)
+                        {
+                            Console.WriteLine(pets);
+                        }
+
+                        while (true)
+                        {
+                            Console.WriteLine("Choose your pet or type Exit to leave:");
+                            temp = Console.ReadLine();
+
+                            if (temp == "1" && Program.currentPlayer.coins >= 30 && Program.currentPlayer.playerPets < 2)
+                            {
+                                Program.currentPlayer.petDamage += 1;
+                                Program.currentPlayer.coins -= 30;
+                                Program.currentPlayer.playerPets += 1;
+                                Program.currentBackPack.Wolf += 1;  
+                                Stable.Remove("Press '1' for = Wolf - 30c");
+                                Console.WriteLine("Fint köp!");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else if (temp == "2" && Program.currentPlayer.coins >= 30 && Program.currentPlayer.playerPets < 2)
+                            {
+                                Program.currentPlayer.petDamage += 1;
+                                Program.currentPlayer.coins -= 30;
+                                Program.currentPlayer.playerPets += 1;
+                                Program.currentBackPack.Hound += 1;
+                                Stable.Remove("Press '2' for = Hound - 30c");
+                                Console.WriteLine("Fint köp!");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else if (temp == "3" && Program.currentPlayer.coins >= 40 && Program.currentPlayer.playerPets < 2)
+                            {
+                                Program.currentPlayer.petDamage += 2;
+                                Program.currentPlayer.coins -= 40;
+                                Program.currentPlayer.playerPets += 1;
+                                Program.currentBackPack.WinterFox += 1;
+                                Stable.Remove("Press '3' for = Winter Fox - 40c");
+                                Console.WriteLine("Fint köp!");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else if (temp == "4" && Program.currentPlayer.coins >= 40 && Program.currentPlayer.playerPets < 2)
+                            {
+                                Program.currentPlayer.petDamage += 2;
+                                Program.currentPlayer.coins -= 40;
+                                Program.currentPlayer.playerPets += 1;
+                                Program.currentBackPack.WelpDragon += 1;
+                                Stable.Remove("Press '4' for = Welp Dragon - 40c");
+                                Console.WriteLine("Fint köp!");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else if (temp == "5" && Program.currentPlayer.coins >= 80 && Program.currentPlayer.playerPets < 2)
+                            {
+                                Program.currentPlayer.petDamage += 4;
+                                Program.currentPlayer.coins -= 80;
+                                Program.currentPlayer.playerPets += 1;
+                                Program.currentBackPack.ArmoredWolf += 1;
+                                Stable.Remove("Press '5' for = Armored Wolf - 80c");
+                                Console.WriteLine("Fint köp!");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else if (temp == "6" && Program.currentPlayer.coins >= 100 && Program.currentPlayer.playerPets < 2)
+                            {
+                                Program.currentPlayer.petDamage += 8;
+                                Program.currentPlayer.coins -= 100;
+                                Program.currentPlayer.playerPets += 1;
+                                Program.currentBackPack.Tiger += 1;
+                                Stable.Remove("Press '6' for = Saber Toothed Tiger");
+                                Console.WriteLine("Denna best kommer göra dig oslagbar! Grattis.");
+                                Console.ReadKey();
+                                Console.Clear();
+                            }
+                            else if (temp == "exit")
+                            {
+                                Console.WriteLine("Bye bye! See you some other time.");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else if (temp != "1" && temp != "2" && temp != "3" && temp != "4" && temp != "5" && temp != "6" && temp != "exit")
+                            {
+                                Console.WriteLine("Ursäkta du får nog ta om det där.");
+                                Console.ReadKey();
+                                Console.Clear();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Inte tillräckligt med coins! Kom tillbaka när du kan betala!");
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                        }
+                    }
+                    else if (input.ToLower() == "n")
+                    {
+                        Console.WriteLine("Hej då!");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                    else if (Program.currentPlayer.playerPets >= 2)
+                    {
+                    Console.WriteLine("You can only have two pets.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ursäkta?");
+                        goto returna;
+                    }
+                }
+
+
+
+        }
 
         public static void Prisoner()
         {
@@ -177,7 +347,7 @@ namespace PepsiMan
 
 
 
-            if (Program.currentPlayer.pet > 0 && Program.currentPlayer.playerRace != "Orc")
+            if (Program.currentPlayer.petDamage > 0 && Program.currentPlayer.playerRace != "Orc")
             {
                 Console.WriteLine("Han kallar på dig och du sätter dig ner bredvid han.");
                 Console.WriteLine("'Du har inte av någon chans sätt min hund? Han sprang iväg för ett tag sen..'");
@@ -217,7 +387,7 @@ namespace PepsiMan
                 {
                     Console.Clear();
                     Console.WriteLine("'Idag är din turdag! Kan det vara han?'. Du visar upp hunden och återförenar dom!");
-                    Program.currentPlayer.pet -= 1;
+                    Program.currentPlayer.petDamage -= 1;
                     Program.currentPlayer.coins += 60;
                     OldmansPet = 1;
                     Console.WriteLine("'Jaaaaaa! Där är du! Tack för att du hittade han. Nu till betalningen..");
@@ -295,8 +465,26 @@ namespace PepsiMan
             Console.Clear();
             Console.WriteLine("Du hittar en bortsprungen hund och han börjar följa efter dig!");
             Console.WriteLine("Han kommer säkert till bra användning mot fiender.");
-            Program.currentPlayer.pet += 1;
-            Console.WriteLine("Du har nu: " + Program.currentPlayer.pet + " hund som kommer hjälpa dig slåss mot fiender!");
+            Program.currentPlayer.petDamage += 1;
+            Program.currentPlayer.playerPets += 1;
+            Console.WriteLine("Din totala attackskada är nu: " + (Program.currentPlayer.wepValue + Program.currentPlayer.petDamage));
+            Console.WriteLine(@"
+                        ,     ,
+                        |\---/|
+                       /  , , |
+                  __.-'|  / \ /
+         __ ___.-'        ._O|
+      .-'  '        :      _/
+     / ,    .        .     |
+    :  ;    :        :   _/
+    |  |   .'     __:   /
+    |  :   /'----'| \  |
+    \  |\  |      | /| |
+     '.'| /       || \ |
+     | /|.'       '.l \\_
+     || ||             '-'
+     '-''-'
+            ");
             Console.ReadKey(true);
             Console.Clear();
         }
@@ -343,16 +531,47 @@ namespace PepsiMan
             Console.ReadKey(true);
             Console.Clear();
         }
-
+        static Random randomCoinDrop = new Random();
         public static void Chest() //Rutan som visas upp när man möter Skattkistan. 
         {
             Console.Clear();
             Console.WriteLine("Du vandrar längs vägen och hittar en gammal skrutten kista, i bältet kommer du på att du har en dolk, du tar fram den och knäcker upp låset");
-            Console.WriteLine("I kistan hittar du 15 coins!");
-            Program.currentPlayer.coins += 15;
-            Console.WriteLine("Du har nu : " + Program.currentPlayer.coins + " coins i din läderpung");
+            int y = randomCoinDrop.Next(15, 20);
+            Program.currentPlayer.coins += y;
+            Console.WriteLine("I kistan hittar du: " + y + " coins!");
+            Console.WriteLine("Du har nu: " + Program.currentPlayer.coins + " coins i din läderpung");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
+            Console.Clear();
+        }
+        public static void ChestTwo() //Rutan som visas upp när man möter Skattkistan. 
+        {
+            Console.Clear();
+            Console.WriteLine("Du fortsätter in i fortet och ser en gammal skrutten kista, i bältet kommer du på att du har en dolk, du tar fram den och knäcker upp låset");
+            int x = randomCoinDrop.Next(15,30);
+            Program.currentPlayer.coins += x;
+            Console.WriteLine("I kistan hittar du " + x + " coins!");
+            Console.WriteLine("Du har nu : " + Program.currentPlayer.coins + " coins i din läderpung");
+            Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
+            Console.WriteLine(@"          |                   |                  |                     |
+ _________|________________.=""""_;=.______________|_____________________|_______
+|                   |  ,-""_,=""""     `""=.|                  |
+|___________________|__""=._o`""-._        `""=.______________|___________________
+          |                `""=._o`""=._      _`""=._                     |
+ _________|_____________________:=._o ""=._.""_.-=""'""=.__________________|_______
+|                   |    __.--"" , ; `""=._o."" ,-""""""-._ "".   |
+|___________________|_._""  ,. .` ` `` ,  `""-._""-._   "". '__|___________________
+          |           |o`""=._` , ""` `; ."". ,  ""-._""-._; ;              |
+ _________|___________| ;`-.o`""=._; ."" ` '`.""\` . ""-._ /_______________|_______
+|                   | |o;    `""-.o`""=._``  '` "" ,__.--o;   |
+|___________________|_| ;     (#) `-.o `""=.`_.--""_o.-; ;___|___________________
+____/______/______/___|o;._    ""      `"".o|o_.--""    ;o;____/______/______/____
+/______/______/______/_""=._o--._        ; | ;        ; ;/______/______/______/_
+____/______/______/______/__""=._o--._   ;o|o;     _._;o;____/______/______/____
+/______/______/______/______/____""=._o._; | ;_.--""o.--""_/______/______/______/_
+____/______/______/______/______/_____""=.o|o_.--""""___/______/______/______/____");
+            Console.ReadKey();
+            Console.Clear();
         }
         public static void Guard()
         {
@@ -362,6 +581,7 @@ namespace PepsiMan
             Console.WriteLine("Du drar ditt svärd och attackerar han.");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
+            Console.Clear();
             Battle("Guarding Skeleton", 4, 18);
         }
 
@@ -382,6 +602,30 @@ namespace PepsiMan
             Console.WriteLine("Du smyger dig framåt och drar ditt vapen, han har redan insett att du är där och vänder sig mot dig..");
             Console.WriteLine("Runt hans hals hänger ett halsband med en nyckel..");
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
+            Console.WriteLine(@" 
+              ...                            
+             ;::::;                           
+           ;::::; :;                          
+         ;:::::'   :;                         
+        ;:::::;     ;.                        
+       ,:::::'       ;           OOO\         
+       ::::::;       ;          OOOOO\        
+       ;:::::;       ;         OOOOOOOO       
+      ,;::::::;     ;'         / OOOOOOO      
+    ;:::::::::`. ,,,;.        /  / DOOOOOO    
+  .';:::::::::::::::::;,     /  /     DOOOO   
+ ,::::::;::::::;;;;::::;,   /  /        DOOO  
+;`::::::`'::::::;;;::::: ,#/  /          DOOO 
+:`:::::::`;::::::;;::: ;::#  /            DOOO
+::`:::::::`;:::::::: ;::::# /              DOO
+`:`:::::::`;:::::: ;::::::#/               DOO
+ :::`:::::::`;; ;:::::::::##                OO
+ ::::`:::::::`;::::::::;:::#                OO
+ `:::::`::::::::::::;'`:;::#                O 
+  `:::::`::::::::;' /  / `:#                  
+   ::::::`:::::;'  /  /   `#              
+
+");
             Console.ReadKey();
             Battle("Warlock", 10, 40); // Enemy 2 - Warlock
 
@@ -395,7 +639,230 @@ namespace PepsiMan
             Console.WriteLine("Tryck på valfri knapp för att fortsätta.");
             Console.ReadKey();
             Battle("Zombie", 6, 6); // Enemy 3 - Zombie
-        }       
+        }
+        
+        public static void RandomEncounters()
+        {
+            RandomBattle();
+        }
+
+        public static void StartGame()
+        {
+            Console.WriteLine("Instructions:");
+            Console.WriteLine("Use arrow-keys to move the snake. \nThe game will start when you press any of the arrow keys. \nGood Luck!");
+            Console.WriteLine("Press 'Enter' to start the game.");
+            Console.ReadLine();
+            Console.Clear();
+
+            int[] xPos = new int[600];
+            xPos[0] = 20;
+            int[] yPos = new int[600];
+            yPos[0] = 10;
+            int appleXDim = 10;
+            int appleYDim = 10;
+            int applesEaten = 0;
+
+
+            decimal gameSpeed = 150;
+
+            bool isGameOn = true;
+            bool isWallHit = false;
+            bool isAppleEaten = false;
+
+
+            Random rnd = new Random();
+
+            Console.CursorVisible = false;
+            Console.Title = "Snake Version 1.0";
+
+            Console.SetCursorPosition(1, 0);
+            Console.WriteLine("~Snake Minigame~ Press any key to Start.");
+
+            // Get snake to appear on screen
+            PaintSnake(applesEaten, xPos, yPos, out xPos, out yPos);
+
+            // Set apple on screen
+            SetApplePositionOnScreen(rnd, out appleXDim, out appleYDim);
+            PaintApple(appleXDim, appleYDim);
+
+
+            // Build wall
+            BuildWall();
+            // Get snake to move
+            ConsoleKey command = Console.ReadKey().Key;
+
+            do
+            {
+                Console.CursorVisible = false;
+                switch (command)
+                {
+                    case ConsoleKey.LeftArrow:
+                        Console.SetCursorPosition(xPos[0], yPos[0]);
+                        Console.Write(" ");
+                        xPos[0]--;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        Console.SetCursorPosition(xPos[0], yPos[0]);
+                        Console.Write(" ");
+                        yPos[0]--;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        Console.SetCursorPosition(xPos[0], yPos[0]);
+                        Console.Write(" ");
+                        xPos[0]++;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        Console.SetCursorPosition(xPos[0], yPos[0]);
+                        Console.Write(" ");
+                        yPos[0]++;
+                        break;
+                }
+
+                // Paint the snake
+                PaintSnake(applesEaten, xPos, yPos, out xPos, out yPos);
+
+                // Detect when snake hits Wall
+                isWallHit = DidSnakeHitWall(xPos[0], yPos[0]);
+
+                if (isWallHit)
+                {
+                    isGameOn = false;
+                    GameOverScreen();
+                }
+
+                // Decect when apple was eaten
+                isAppleEaten = DetermineIfAppleWasEaten(xPos[0], yPos[0], appleXDim, appleYDim);
+
+                // Place apple on board
+                if (isAppleEaten)
+                {
+                    SetApplePositionOnScreen(rnd, out appleXDim, out appleYDim);
+                    PaintApple(appleXDim, appleYDim);
+                    applesEaten++;
+                    // Make game faster
+                    gameSpeed *= .925m;
+                    Console.SetCursorPosition(2, 21);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("Apples eaten: " + applesEaten);
+                }
+
+                if (Console.KeyAvailable) command = Console.ReadKey().Key;
+                // Slow game down
+                System.Threading.Thread.Sleep(Convert.ToInt32(gameSpeed));
+
+
+            } while (isGameOn);
+
+            Program.currentPlayer.coins += applesEaten;
+        }
+
+        private static void GameOverScreen()
+        {
+            Console.Clear();
+            Console.WriteLine("Ooh that's it I'm afraid. Game Over! Thanks for playing. \nPress 'Enter' to exit.");
+            Console.ReadLine();
+        }
+
+        private static void PaintSnake(int applesEaten, int[] xPosIn, int[] yPosIn, out int[] xPosOut, out int[] yPosOut)
+        {
+            // Paint the head
+            Console.SetCursorPosition(xPosIn[0], yPosIn[0]);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("■");
+
+            if (applesEaten >= 10)
+            {
+                Console.SetCursorPosition(xPosIn[0], yPosIn[0]);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("■");
+            }
+
+            // Paint the body
+            for (int i = 1; i < applesEaten + 1; i++)
+            {
+                Console.SetCursorPosition(xPosIn[i], yPosIn[i]);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("■");
+
+                if (applesEaten >= 10)
+                {
+                    Console.SetCursorPosition(xPosIn[i], yPosIn[i]);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("■");
+                }
+            }
+
+            // Erase last part of the snake
+            Console.SetCursorPosition(xPosIn[applesEaten + 1], yPosIn[applesEaten + 1]);
+            Console.WriteLine(" ");
+
+            // Record location of each bodypart
+            for (int i = applesEaten + 1; i > 0; i--)
+            {
+                xPosIn[i] = xPosIn[i - 1];
+                yPosIn[i] = yPosIn[i - 1];
+            }
+
+            // Return the new array
+            xPosOut = xPosIn;
+            yPosOut = yPosIn;
+        }
+
+        private static bool DidSnakeHitWall(int x, int y)
+        {
+            if (x == 1 || x == 40 || y == 1 || y == 20) return true; return false;
+        }
+
+        private static void BuildWall()
+        {
+            // Building the vertical lines
+            for (int i = 1; i < 21; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(1, i);
+                Console.Write("█");
+                Console.SetCursorPosition(40, i);
+                Console.Write("█");
+            }
+
+
+            for (int i = 1; i < 41; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(i, 1);
+                Console.Write("█");
+                Console.SetCursorPosition(i, 20);
+                Console.Write("█");
+            }
+
+            for (int i = 1; i < 41; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(i, 21);
+                Console.Write("►");
+            }
+
+        }
+
+        private static void SetApplePositionOnScreen(Random rnd, out int appleXDim, out int appleYDim)
+        {
+            appleXDim = rnd.Next(0 + 2, 40 - 2);
+            appleYDim = rnd.Next(0 + 2, 20 - 2);
+        }
+
+        private static void PaintApple(int appleXDim, int appleYDim)
+        {
+            Console.SetCursorPosition(appleXDim, appleYDim);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("♫");
+        }
+
+        private static bool DetermineIfAppleWasEaten(int x, int y, int appleXDim, int appleYDim)
+        {
+            if (x == appleXDim && y == appleYDim) return true; return false;
+        }
+
     }
+    
 }
 

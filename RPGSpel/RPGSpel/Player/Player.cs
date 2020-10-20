@@ -16,6 +16,7 @@ namespace PepsiMan
             Y = initialY;
             PlayerMarker = "\x263a";
             PlayerColor = ConsoleColor.Green;
+            int coins = 2000;
 
         }
 

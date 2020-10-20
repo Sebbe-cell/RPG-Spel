@@ -14,8 +14,9 @@ namespace PepsiMan
         public int wepValue = 0;
         public int special = 2;
         public int specialValue = 6;
-        public int pet = 0;
+        public int petDamage = 0;
         public int key = 0;
+        public int playerPets = 0;
 
     }
 }

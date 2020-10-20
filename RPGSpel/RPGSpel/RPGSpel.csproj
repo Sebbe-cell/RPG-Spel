@@ -54,7 +54,10 @@
     <Compile Include="NPC\Prisoner.cs" />
     <Compile Include="NPC\QuestGiver.cs" />
     <Compile Include="NPC\Shopkeep.cs" />
+    <Compile Include="NPC\Snake.cs" />
+    <Compile Include="NPC\Stable.cs" />
     <Compile Include="Player\PlayerAttributes.cs" />
+    <Compile Include="Player\PlayerBackpack.cs" />
     <Compile Include="World\GameWorld.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="NPC\Enemy.cs" />
